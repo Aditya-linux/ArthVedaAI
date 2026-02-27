@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { CheckCircle2, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-export default function AuthPage() {
+function AuthForm() {
     const { user, loading, signInWithGoogle } = useAuth();
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -344,5 +344,31 @@ export default function AuthPage() {
                 }
             `}</style>
         </div>
+    );
+}
+
+export default function AuthPage() {
+    return (
+        <Suspense fallback={
+            <div className="auth-loading">
+                <div className="spinner" />
+                <style jsx>{`
+                    .auth-loading {
+                        display: flex; align-items: center; justify-content: center;
+                        min-height: 100vh; background: var(--bg-app);
+                    }
+                    .spinner {
+                        width: 40px; height: 40px;
+                        border: 3px solid var(--border-color);
+                        border-top-color: var(--primary-blue);
+                        border-radius: 50%;
+                        animation: spin 0.8s linear infinite;
+                    }
+                    @keyframes spin { to { transform: rotate(360deg); } }
+                `}</style>
+            </div>
+        }>
+            <AuthForm />
+        </Suspense>
     );
 }
