@@ -1,0 +1,17 @@
+{
+    "name": "ArthVeda AI",
+    "short_name": "ArthVeda AI",
+    "theme_color": "#0f172a",
+    "background_color": "#0f172a",
+    "display": "standalone",
+    "orientation": "portrait-primary",
+    "scope": "/",
+    "start_url": "/",
+    "icons": [
+        {
+            "src": "/icons/icon.jpeg",
+            "sizes": "192x192 512x512",
+            "type": "image/jpeg"
+        }
+    ]
+}
