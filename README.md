@@ -2,6 +2,8 @@
 
 **A Smarter Way to Think About Trading**
 
+🌐 **[Live Demo: ArthVeda AI](https://arth-veda-ai-t7y9.vercel.app/)**
+
 ArthVeda AI is a comprehensive AI-powered financial trading simulator and real-time sentiment analysis engine. It processes thousands of financial news sources using advanced Natural Language Processing (NLP) to provide traders with real-time sentiment signals and actionable trade recommendations.
 
 ## ⚠️ The Problem
