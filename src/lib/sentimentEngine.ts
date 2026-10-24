@@ -121,11 +121,12 @@ export function analyzeSentiment(text: string): SentimentResult {
 export function calculateSMFEIndex(articles: { sentiment: SentimentResult; datetime?: number; source?: string }[]): {
     smi: number;
     weightedConfidence: number;
+    sentimentVelocity: number;
     effectiveSampleWeight: number;
     label: 'Bullish' | 'Bearish' | 'Neutral';
 } {
     if (!articles || articles.length === 0) {
-        return { smi: 0, weightedConfidence: 50, effectiveSampleWeight: 0, label: 'Neutral' };
+        return { smi: 0, weightedConfidence: 50, sentimentVelocity: 0, effectiveSampleWeight: 0, label: 'Neutral' };
     }
 
     let numerator = 0;
@@ -149,6 +150,14 @@ export function calculateSMFEIndex(articles: { sentiment: SentimentResult; datet
     const smi = denominator > 0 ? Math.max(-1, Math.min(1, numerator / denominator)) : 0;
     const avgConf = denominator > 0 ? Math.round(totalConfidence / denominator) : 50;
 
+    // Institutional Improvement: Sentiment Velocity (First Derivative dS/dt)
+    // Measures whether sentiment momentum is accelerating or deteriorating
+    const recentScores = articles.slice(0, 3).map(a => a.sentiment.score);
+    const olderScores = articles.slice(3).map(a => a.sentiment.score);
+    const recentAvg = recentScores.length > 0 ? recentScores.reduce((a, b) => a + b, 0) / recentScores.length : smi;
+    const olderAvg = olderScores.length > 0 ? olderScores.reduce((a, b) => a + b, 0) / olderScores.length : smi;
+    const sentimentVelocity = parseFloat((recentAvg - olderAvg).toFixed(3));
+
     let label: 'Bullish' | 'Bearish' | 'Neutral' = 'Neutral';
     if (smi > 0.15) label = 'Bullish';
     else if (smi < -0.15) label = 'Bearish';
@@ -156,6 +165,7 @@ export function calculateSMFEIndex(articles: { sentiment: SentimentResult; datet
     return {
         smi: parseFloat(smi.toFixed(4)),
         weightedConfidence: avgConf,
+        sentimentVelocity,
         effectiveSampleWeight: parseFloat(denominator.toFixed(2)),
         label
     };
