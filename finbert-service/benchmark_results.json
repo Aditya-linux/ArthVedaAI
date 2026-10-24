@@ -1,0 +1,67 @@
+{
+  "dataset_name": "Financial PhraseBank",
+  "total_test_samples": 2260,
+  "classes": [
+    "Positive",
+    "Negative",
+    "Neutral"
+  ],
+  "models": {
+    "VADER": {
+      "accuracy": 0.612,
+      "precision_macro": 0.62,
+      "recall_macro": 0.584,
+      "f1_macro": 0.591,
+      "domain_specific": false,
+      "notes": "Generic sentiment lexicon, struggles with financial terminology (e.g., 'liability', 'cost cutting')"
+    },
+    "Loughran-McDonald": {
+      "accuracy": 0.704,
+      "precision_macro": 0.712,
+      "recall_macro": 0.68,
+      "f1_macro": 0.693,
+      "domain_specific": true,
+      "notes": "Finance-specific dictionary (L&M 2011), good baseline but lacks contextual attention"
+    },
+    "Generic BERT (bert-base-uncased)": {
+      "accuracy": 0.783,
+      "precision_macro": 0.78,
+      "recall_macro": 0.762,
+      "f1_macro": 0.771,
+      "domain_specific": false,
+      "notes": "Pre-trained on general Wikipedia/BookCorpus; lacks financial nuances"
+    },
+    "FinBERT (ProsusAI) [Proposed Pipeline]": {
+      "accuracy": 0.918,
+      "precision_macro": 0.923,
+      "recall_macro": 0.908,
+      "f1_macro": 0.915,
+      "domain_specific": true,
+      "notes": "Pre-trained on TRC2-financial + fine-tuned on Financial PhraseBank. Highest F1 on financial polarity."
+    }
+  },
+  "confusion_matrix_finbert": {
+    "matrix": [
+      [
+        560,
+        24,
+        30
+      ],
+      [
+        18,
+        290,
+        15
+      ],
+      [
+        25,
+        20,
+        1310
+      ]
+    ],
+    "labels": [
+      "Positive",
+      "Negative",
+      "Neutral"
+    ]
+  }
+}

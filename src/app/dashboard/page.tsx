@@ -223,6 +223,31 @@ function DashboardContent() {
                                 <div className="reasoning">
                                     <p>{signal.reasoning}</p>
                                 </div>
+
+                                {signal.prediction && (
+                                    <div style={{
+                                        padding: '10px 12px',
+                                        background: 'rgba(59, 130, 246, 0.08)',
+                                        borderRadius: 'var(--radius-md)',
+                                        border: '1px solid rgba(59, 130, 246, 0.2)',
+                                        fontSize: '0.8rem',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        gap: '4px'
+                                    }}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            <span style={{ fontWeight: 700, color: 'var(--primary-blue)', textTransform: 'uppercase', fontSize: '0.7rem' }}>
+                                                NLP Market Prediction
+                                            </span>
+                                            <span style={{ fontWeight: 700, color: signal.prediction.directionalForecast === 'Bullish' ? 'var(--green)' : (signal.prediction.directionalForecast === 'Bearish' ? 'var(--red)' : '#EAB308') }}>
+                                                {signal.prediction.directionalForecast} ({signal.prediction.probability}%)
+                                            </span>
+                                        </div>
+                                        <span style={{ color: 'var(--text-secondary)', fontSize: '0.75rem' }}>
+                                            {signal.prediction.nlpDriver}
+                                        </span>
+                                    </div>
+                                )}
                             </div>
                         ) : (
                             <div className="empty-state">Loading signal analysis...</div>

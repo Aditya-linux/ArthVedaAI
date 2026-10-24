@@ -51,6 +51,14 @@ export interface SentimentResult {
 // --- Trade Signals ---
 export type SignalType = 'BUY' | 'SELL' | 'HOLD';
 
+export interface MarketPrediction {
+  directionalForecast: 'Bullish' | 'Bearish' | 'Neutral';
+  probability: number;
+  sentimentMomentum: number;
+  horizon: string;
+  nlpDriver: string;
+}
+
 export interface TradeSignal {
   id: string;
   symbol: string;
@@ -61,6 +69,7 @@ export interface TradeSignal {
   stopLoss: number;
   reasoning: string;
   indicators: IndicatorSnapshot;
+  prediction?: MarketPrediction;
   timestamp: number;
 }
 

@@ -179,6 +179,23 @@ export default function SignalsPage() {
                                         <p>{stock.signal.reasoning}</p>
                                     </div>
 
+                                    {/* Market Sentiment Directional Prediction Box */}
+                                    {stock.signal.prediction && (
+                                        <div className="prediction-box">
+                                            <div className="pred-header">
+                                                <span className="pred-title">Market Sentiment Prediction Model</span>
+                                                <span className={`pred-forecast ${stock.signal.prediction.directionalForecast.toLowerCase()}`}>
+                                                    Forecast: {stock.signal.prediction.directionalForecast} ({stock.signal.prediction.probability}% Prob)
+                                                </span>
+                                            </div>
+                                            <p className="pred-driver">{stock.signal.prediction.nlpDriver}</p>
+                                            <div className="pred-meta-row">
+                                                <span>Sentiment Momentum: <strong>{(stock.signal.prediction.sentimentMomentum * 100).toFixed(0)}%</strong></span>
+                                                <span>Forecast Horizon: <strong>{stock.signal.prediction.horizon}</strong></span>
+                                            </div>
+                                        </div>
+                                    )}
+
                                     {/* Confidence Bar */}
                                     <div className="confidence-section">
                                         <div className="confidence-header">
@@ -481,6 +498,63 @@ export default function SignalsPage() {
                         color: var(--text-secondary);
                         line-height: 1.6;
                         margin: 0;
+                    }
+
+                    .prediction-box {
+                        padding: 14px 16px;
+                        background: rgba(59, 130, 246, 0.05);
+                        border: 1px solid rgba(59, 130, 246, 0.2);
+                        border-radius: var(--radius-sm, 8px);
+                        margin-bottom: 16px;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 8px;
+                    }
+
+                    .pred-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    }
+
+                    .pred-title {
+                        font-size: 0.72rem;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        letter-spacing: 0.05em;
+                        color: var(--primary-blue);
+                    }
+
+                    .pred-forecast {
+                        font-size: 0.75rem;
+                        font-weight: 700;
+                        padding: 2px 8px;
+                        border-radius: var(--radius-full);
+                        text-transform: uppercase;
+                    }
+
+                    .pred-forecast.bullish { background: var(--green-bg); color: var(--green); }
+                    .pred-forecast.bearish { background: var(--red-bg); color: var(--red); }
+                    .pred-forecast.neutral { background: rgba(234, 179, 8, 0.1); color: #EAB308; }
+
+                    .pred-driver {
+                        font-size: 0.82rem;
+                        color: var(--text-primary);
+                        line-height: 1.5;
+                        margin: 0;
+                    }
+
+                    .pred-meta-row {
+                        display: flex;
+                        justify-content: space-between;
+                        font-size: 0.75rem;
+                        color: var(--text-tertiary);
+                        border-top: 1px dashed var(--border-color);
+                        padding-top: 6px;
+                    }
+
+                    .pred-meta-row strong {
+                        color: var(--text-secondary);
                     }
 
                     /* Confidence */

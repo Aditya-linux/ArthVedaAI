@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Newspaper, Zap, Activity, X } from 'lucide-react';
+import { LayoutDashboard, Newspaper, Zap, Activity, FileText, BarChart3, X } from 'lucide-react';
 import { useLayout } from '@/context/LayoutContext';
 import Image from 'next/image';
 
@@ -58,8 +58,10 @@ const Sidebar = () => {
           {[
             { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
             { name: 'News Feed', path: '/news', icon: Newspaper },
+            { name: 'SEC Reports NLP', path: '/reports', icon: FileText },
+            { name: 'AI Signals & Prediction', path: '/signals', icon: Activity },
+            { name: 'NLP Benchmarks', path: '/benchmarks', icon: BarChart3 },
             { name: 'Simulator', path: '/simulator', icon: Zap },
-            { name: 'AI Signals', path: '/signals', icon: Activity },
           ].map((item) => {
             const isActive = pathname === item.path;
             return (
