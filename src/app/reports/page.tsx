@@ -550,12 +550,19 @@ export default function ReportsPage() {
                 }
 
                 @media (max-width: 1024px) {
-                    .page-header { flex-direction: column; align-items: flex-start; }
+                    .page-header { flex-direction: column; align-items: flex-start; gap: 16px; padding: 20px; }
                     .kpi-grid { grid-template-columns: repeat(2, 1fr); }
                 }
 
                 @media (max-width: 640px) {
+                    .page-header { padding: 16px; }
+                    .page-title { font-size: 1.25rem; }
+                    .controls { flex-direction: column; width: 100%; }
+                    .select-input, .btn-refresh { width: 100%; justify-content: center; }
                     .kpi-grid { grid-template-columns: 1fr; }
+                    .section-header { padding: 14px 16px; flex-direction: column; align-items: flex-start; gap: 10px; }
+                    .section-badges { width: 100%; justify-content: space-between; }
+                    .section-body { padding: 16px; }
                 }
             `}</style>
         </div>

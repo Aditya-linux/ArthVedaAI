@@ -161,12 +161,12 @@ export default function Watchlist({ onSelect, currentSymbol }: WatchlistProps) {
                     flex-direction: column;
                     align-items: center;
                     justify-content: center;
-                    padding: 32px;
+                    padding: 24px 16px;
                     text-align: center;
                     color: var(--text-tertiary);
                     border: 1px dashed var(--border-color);
                     border-radius: var(--radius-md);
-                    height: 150px;
+                    min-height: 120px;
                 }
                 .watchlist-empty p {
                     margin: 8px 0 4px;
@@ -175,6 +175,23 @@ export default function Watchlist({ onSelect, currentSymbol }: WatchlistProps) {
                 }
                 .watchlist-empty .hint {
                     font-size: 0.8rem;
+                }
+
+                @media (max-width: 1024px) {
+                    .watchlist-list {
+                        flex-direction: row;
+                        overflow-x: auto;
+                        -webkit-overflow-scrolling: touch;
+                        padding-bottom: 4px;
+                        gap: 10px;
+                    }
+                    .watchlist-item {
+                        flex-shrink: 0;
+                        min-width: 130px;
+                    }
+                    .btn-remove {
+                        opacity: 0.7;
+                    }
                 }
             `}</style>
         </div>

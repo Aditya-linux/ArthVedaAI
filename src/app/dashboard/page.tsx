@@ -90,474 +90,486 @@ function DashboardContent() {
     };
 
     return (
-        <div className="dashboard-container">
-            {/* Header Section */}
-            <header className="dashboard-header card">
-                <div className="asset-info">
-                    <div className="symbol-selector-wrapper">
-                        <select
-                            value={symbol}
-                            onChange={(e) => setSymbol(e.target.value)}
-                            className="symbol-selector"
-                        >
-                            {ASSETS.map(s => (
-                                <option key={s} value={s}>{s}</option>
-                            ))}
-                        </select>
-                    </div>
+        <div className="dash">
+            {/* Header */}
+            <header className="dash-header">
+                <div className="dash-header-left">
+                    <select
+                        value={symbol}
+                        onChange={(e) => setSymbol(e.target.value)}
+                        className="symbol-select"
+                    >
+                        {ASSETS.map(s => (
+                            <option key={s} value={s}>{s}</option>
+                        ))}
+                    </select>
 
-                    {/* Watchlist Toggle */}
                     <button
                         className={`star-btn ${isAssetWatched ? 'active' : ''}`}
                         onClick={toggleWatchlist}
                         title={isAssetWatched ? 'Remove from Watchlist' : 'Add to Watchlist'}
                         disabled={!isLoaded}
                     >
-                        <Star size={24} fill={isAssetWatched ? 'currentColor' : 'none'} />
+                        <Star size={20} fill={isAssetWatched ? 'currentColor' : 'none'} />
                     </button>
 
-                    <div className="price-info">
-                        <h1 className="current-price">
+                    <div className="price-block">
+                        <span className="price-value">
                             {currentPrice ? formatPrice(currentPrice) : '---'}
-                        </h1>
-                        <div className={`change-badge ${isPositive ? 'positive' : 'negative'}`}>
+                        </span>
+                        <span className={`price-change ${isPositive ? 'up' : 'down'}`}>
                             {isPositive ? <ArrowUp size={14} /> : <ArrowDown size={14} />}
                             {Math.abs(priceChange).toFixed(2)}%
-                        </div>
+                        </span>
                     </div>
                 </div>
-                <div className="controls">
-                    <button onClick={fetchData} className="refresh-btn" title="Refresh Data">
-                        <RefreshCw size={18} className={loading ? 'spin' : ''} />
-                    </button>
-                </div>
+
+                <button onClick={fetchData} className="refresh-btn" title="Refresh Data">
+                    <RefreshCw size={16} className={loading ? 'spin' : ''} />
+                </button>
             </header>
 
-            <style jsx>{`
-               .symbol-selector {
-                   appearance: none;
-                   background: var(--bg-app);
-                   color: var(--text-primary);
-                   font-weight: 700;
-                   padding: 8px 16px;
-                   padding-right: 32px; /* Space for chevron */
-                   border-radius: var(--radius-md);
-                   font-size: 1.5rem; /* Larger font for main symbol */
-                   border: 1px solid var(--border-color);
-                   cursor: pointer;
-                   font-family: var(--font-sans);
-                   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-                   background-repeat: no-repeat;
-                   background-position: right 8px center;
-                   background-size: 16px;
-               }
-               
-               .symbol-selector:focus {
-                   outline: 2px solid var(--primary-blue);
-                   outline-offset: 2px;
-               }
-
-               .star-btn {
-                   background: none;
-                   border: none;
-                   color: var(--text-tertiary);
-                   cursor: pointer;
-                   transition: all 0.2s;
-                   padding: 8px;
-                   border-radius: 50%;
-               }
-
-               .star-btn:hover {
-                   background: var(--bg-surface);
-                   color: var(--yellow);
-               }
-
-               .star-btn.active {
-                   color: var(--yellow);
-               }
-            `}</style>
-
-
-            {/* Main Content Grid */}
-            <div className="content-grid">
-
-                {/* Watchlist Panel (Left or collapsed) */}
-                <div className="watchlist-panel card">
+            {/* Grid */}
+            <div className="dash-grid">
+                {/* Watchlist */}
+                <aside className="dash-watchlist card">
                     <Watchlist onSelect={setSymbol} currentSymbol={symbol} />
-                </div>
+                </aside>
 
-                {/* Chart Card */}
-                <div className="chart-card card" style={{ padding: 0, overflow: 'hidden', minHeight: '600px' }}>
+                {/* Chart */}
+                <div className="dash-chart card" style={{ padding: 0, overflow: 'hidden' }}>
                     <TradingViewWidget symbol={symbol} />
                 </div>
 
-                {/* Right Column */}
-                <div className="right-column">
+                {/* Right Panel */}
+                <div className="dash-right">
                     <ActivePositionsCard />
 
-                    {/* Trade Signal Card */}
-                    <div className="signal-card card">
-                        <h3 className="section-title">AI Trade Signal</h3>
+                    {/* Signal */}
+                    <div className="card">
+                        <h3 className="panel-title">AI Trade Signal</h3>
                         {signal ? (
-                            <div className="signal-content">
-                                <div className="signal-header">
-                                    <div className={`signal-badge ${signal.type.toLowerCase()}`}>
+                            <div className="signal-body">
+                                <div className="signal-top">
+                                    <span className={`signal-type ${signal.type.toLowerCase()}`}>
                                         {signal.type}
-                                    </div>
-                                    <div className="confidence">
-                                        {signal.confidence}% Confidence
-                                    </div>
+                                    </span>
+                                    <span className="signal-conf">{signal.confidence}%</span>
                                 </div>
 
                                 <div className="signal-targets">
-                                    <div className="target-item">
-                                        <span className="label">Target</span>
-                                        <span className="value success">${formatPrice(signal.targetPrice)}</span>
+                                    <div className="target-col">
+                                        <span className="target-label">Target</span>
+                                        <span className="target-val green">${formatPrice(signal.targetPrice)}</span>
                                     </div>
-                                    <div className="target-item">
-                                        <span className="label">Stop Loss</span>
-                                        <span className="value danger">${formatPrice(signal.stopLoss)}</span>
+                                    <div className="target-col">
+                                        <span className="target-label">Stop Loss</span>
+                                        <span className="target-val red">${formatPrice(signal.stopLoss)}</span>
                                     </div>
                                 </div>
 
-                                <div className="reasoning">
-                                    <p>{signal.reasoning}</p>
-                                </div>
+                                <p className="signal-reason">{signal.reasoning}</p>
 
                                 {signal.prediction && (
-                                    <div style={{
-                                        padding: '10px 12px',
-                                        background: 'rgba(59, 130, 246, 0.08)',
-                                        borderRadius: 'var(--radius-md)',
-                                        border: '1px solid rgba(59, 130, 246, 0.2)',
-                                        fontSize: '0.8rem',
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        gap: '4px'
-                                    }}>
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <span style={{ fontWeight: 700, color: 'var(--primary-blue)', textTransform: 'uppercase', fontSize: '0.7rem' }}>
-                                                NLP Market Prediction
-                                            </span>
-                                            <span style={{ fontWeight: 700, color: signal.prediction.directionalForecast === 'Bullish' ? 'var(--green)' : (signal.prediction.directionalForecast === 'Bearish' ? 'var(--red)' : '#EAB308') }}>
+                                    <div className="prediction-strip">
+                                        <div className="pred-row">
+                                            <span className="pred-label">NLP Prediction</span>
+                                            <span className={`pred-val ${signal.prediction.directionalForecast === 'Bullish' ? 'green' : signal.prediction.directionalForecast === 'Bearish' ? 'red' : 'yellow'}`}>
                                                 {signal.prediction.directionalForecast} ({signal.prediction.probability}%)
                                             </span>
                                         </div>
-                                        <span style={{ color: 'var(--text-secondary)', fontSize: '0.75rem' }}>
-                                            {signal.prediction.nlpDriver}
-                                        </span>
+                                        <span className="pred-driver">{signal.prediction.nlpDriver}</span>
                                     </div>
                                 )}
                             </div>
                         ) : (
-                            <div className="empty-state">Loading signal analysis...</div>
+                            <div className="empty-msg">Loading signal analysis...</div>
                         )}
                     </div>
 
-                    {/* News/Intel Card */}
-                    <div className="intel-card card">
-                        <h3 className="section-title">Latest Intelligence</h3>
+                    {/* News */}
+                    <div className="card">
+                        <h3 className="panel-title">Latest Intelligence</h3>
                         <div className="intel-list">
                             {news.slice(0, 5).map(n => (
-                                <div key={n.id} className="intel-item">
-                                    <span className={`sentiment-dot ${n.sentiment.label.toLowerCase()}`} />
-                                    <div className="intel-content">
-                                        <h4 className="intel-headline">{n.headline}</h4>
+                                <div key={n.id} className="intel-row">
+                                    <span className={`dot ${n.sentiment.label.toLowerCase()}`} />
+                                    <div className="intel-text">
+                                        <span className="intel-headline">{n.headline}</span>
                                         <span className="intel-meta">
-                                            {new Date(n.datetime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} • {n.source}
+                                            {new Date(n.datetime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} -- {n.source}
                                         </span>
                                     </div>
                                 </div>
                             ))}
-                            {news.length === 0 && <div className="empty-state">No recent intel found.</div>}
+                            {news.length === 0 && <div className="empty-msg">No recent intel found.</div>}
                         </div>
                     </div>
                 </div>
             </div>
 
             <style jsx>{`
-                .dashboard-container {
+                .dash {
                     display: flex;
                     flex-direction: column;
-                    gap: 24px;
-                    height: 100vh;
-                    overflow-y: auto; /* Enable scroll for the container */
-                }
-
-                @media (max-width: 1024px) {
-                    .dashboard-container {
-                        height: auto;
-                        min-height: 100vh;
-                        overflow-y: visible;
-                    }
-                }
-
-                .dashboard-header {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    padding: 24px 32px;
-                }
-
-                .asset-info {
-                    display: flex;
-                    align-items: center;
-                    gap: 24px;
-                }
-
-                .price-info {
-                    display: flex;
-                    align-items: baseline;
-                    gap: 12px;
-                }
-
-                .current-price {
-                    font-size: 2.5rem;
-                    font-weight: 700;
-                    color: var(--text-primary);
-                    margin: 0;
-                    letter-spacing: -1px;
-                }
-
-                .change-badge {
-                    display: flex;
-                    align-items: center;
-                    padding: 4px 10px;
-                    border-radius: var(--radius-full);
-                    font-size: 0.9rem;
-                    font-weight: 600;
-                }
-
-                .change-badge.positive { background: var(--green-bg); color: var(--green); }
-                .change-badge.negative { background: var(--red-bg); color: var(--red); }
-
-                .controls {
-                    display: flex;
-                    align-items: center;
                     gap: 16px;
                 }
 
+                /* Header */
+                .dash-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 16px 20px;
+                    background: var(--bg-surface);
+                    border-radius: var(--radius-lg);
+                    border: 1px solid var(--border-color);
+                }
+
+                .dash-header-left {
+                    display: flex;
+                    align-items: center;
+                    gap: 16px;
+                    flex-wrap: wrap;
+                }
+
+                .symbol-select {
+                    appearance: none;
+                    background: var(--bg-app);
+                    color: var(--text-primary);
+                    font-weight: 700;
+                    padding: 8px 32px 8px 12px;
+                    border-radius: var(--radius-md);
+                    font-size: 1.25rem;
+                    border: 1px solid var(--border-color);
+                    cursor: pointer;
+                    font-family: var(--font-sans);
+                    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+                    background-repeat: no-repeat;
+                    background-position: right 8px center;
+                    background-size: 14px;
+                }
+
+                .symbol-select:focus {
+                    outline: 2px solid var(--primary-blue);
+                    outline-offset: 1px;
+                }
+
+                .star-btn {
+                    background: none;
+                    border: none;
+                    color: var(--text-tertiary);
+                    cursor: pointer;
+                    padding: 6px;
+                    border-radius: 50%;
+                    transition: color 0.15s;
+                    display: flex;
+                }
+
+                .star-btn.active { color: var(--yellow); }
+                .star-btn:hover { color: var(--yellow); }
+
+                .price-block {
+                    display: flex;
+                    align-items: baseline;
+                    gap: 10px;
+                }
+
+                .price-value {
+                    font-size: 1.75rem;
+                    font-weight: 700;
+                    color: var(--text-primary);
+                    letter-spacing: -0.5px;
+                    font-family: var(--font-mono);
+                }
+
+                .price-change {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 2px;
+                    padding: 3px 8px;
+                    border-radius: var(--radius-full);
+                    font-size: 0.813rem;
+                    font-weight: 600;
+                }
+
+                .price-change.up { background: var(--green-bg); color: var(--green); }
+                .price-change.down { background: var(--red-bg); color: var(--red); }
+
                 .refresh-btn {
                     background: var(--bg-app);
-                    border: none;
-                    width: 40px;
-                    height: 40px;
+                    border: 1px solid var(--border-color);
+                    width: 36px;
+                    height: 36px;
                     border-radius: 50%;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     color: var(--text-secondary);
                     cursor: pointer;
-                    transition: all 0.2s;
+                    transition: all 0.15s;
                 }
 
                 .refresh-btn:hover {
-                    background: var(--bg-surface);
                     color: var(--primary-blue);
-                    box-shadow: var(--shadow-soft);
+                    border-color: var(--primary-blue);
                 }
 
                 .spin { animation: spin 1s linear infinite; }
                 @keyframes spin { 100% { transform: rotate(360deg); } }
 
-                @media (max-width: 768px) {
-                    .dashboard-header {
-                        flex-direction: column;
-                        align-items: flex-start;
-                        gap: 16px;
-                        padding: 16px;
-                    }
-                    
-                    .asset-info {
-                        width: 100%;
-                        justify-content: space-between;
-                    }
-
-                    .controls {
-                        align-self: flex-end;
-                    }
-                }
-
-                .content-grid {
+                /* Grid */
+                .dash-grid {
                     display: grid;
-                    grid-template-columns: 250px 1fr 350px;
-                    gap: 24px;
-                    flex: 1;
-                    min-height: 0; /* Important for scroll */
+                    grid-template-columns: 220px 1fr 320px;
+                    gap: 16px;
                 }
 
-                @media (max-width: 1280px) {
-                    .content-grid {
-                        grid-template-columns: 220px 1fr 300px; /* Slightly tighter on medium screens */
-                    }
-                }
-
-                @media (max-width: 1024px) {
-                    .content-grid {
-                        display: flex;
-                        flex-direction: column;
-                        min-height: auto; /* Allow full height scrolling on mobile */
-                    }
-
-                    .watchlist-panel {
-                        order: 2; /* Move watchlist below chart */
-                        max-height: 400px; /* Limit height */
-                    }
-
-                    .chart-card {
-                        order: 1; /* Chart first */
-                        min-height: 500px; /* Ensure good height for chart */
-                    }
-
-                    .right-column {
-                        order: 3; /* Signals/News last */
-                    }
-                }
-
-                .watchlist-panel {
-                    overflow: hidden;
-                    display: flex;
-                    flex-direction: column;
+                .dash-watchlist {
                     padding: 16px;
+                    overflow: hidden;
                 }
 
-                .chart-card {
-                    display: flex;
-                    flex-direction: column;
-                    /* padding removed for widget */
+                .dash-chart {
+                    min-height: 550px;
                 }
 
-                .right-column {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 24px;
-                }
-
-                .signal-card, .intel-card {
-                    display: flex;
-                    flex-direction: column;
-                    padding: 24px;
-                }
-
-                .signal-content {
+                .dash-right {
                     display: flex;
                     flex-direction: column;
                     gap: 16px;
                 }
 
-                .signal-header {
+                /* Panel Titles */
+                .panel-title {
+                    font-size: 0.938rem;
+                    font-weight: 600;
+                    margin-bottom: 16px;
+                    color: var(--text-primary);
+                }
+
+                /* Signal */
+                .signal-body {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+                }
+
+                .signal-top {
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
                 }
 
-                .signal-badge {
-                    padding: 6px 12px;
+                .signal-type {
+                    padding: 4px 12px;
                     border-radius: var(--radius-sm);
                     font-weight: 700;
-                    font-size: 0.9rem;
+                    font-size: 0.813rem;
                     text-transform: uppercase;
+                    letter-spacing: 0.02em;
                 }
 
-                .signal-badge.buy { background: var(--green-bg); color: var(--green); }
-                .signal-badge.sell { background: var(--red-bg); color: var(--red); }
-                .signal-badge.hold { background: var(--bg-tertiary); color: var(--text-secondary); }
+                .signal-type.buy { background: var(--green-bg); color: var(--green); }
+                .signal-type.sell { background: var(--red-bg); color: var(--red); }
+                .signal-type.hold { background: var(--yellow-bg); color: var(--yellow); }
 
-                .confidence {
-                    font-size: 0.9rem;
+                .signal-conf {
+                    font-size: 0.813rem;
                     color: var(--text-secondary);
                     font-weight: 500;
                 }
 
                 .signal-targets {
                     display: flex;
-                    gap: 16px;
-                    padding: 12px;
+                    gap: 12px;
+                    padding: 10px;
                     background: var(--bg-app);
                     border-radius: var(--radius-md);
                 }
 
-                .target-item {
+                .target-col {
                     display: flex;
                     flex-direction: column;
                     flex: 1;
+                    gap: 2px;
                 }
 
-                .target-item .label {
-                    font-size: 0.75rem;
+                .target-label {
+                    font-size: 0.688rem;
                     color: var(--text-tertiary);
                     text-transform: uppercase;
                     font-weight: 600;
+                    letter-spacing: 0.03em;
                 }
 
-                .target-item .value {
+                .target-val {
                     font-weight: 700;
                     font-family: var(--font-mono);
+                    font-size: 0.875rem;
                 }
 
-                .value.success { color: var(--green); }
-                .value.danger { color: var(--red); }
+                .target-val.green { color: var(--green); }
+                .target-val.red { color: var(--red); }
 
-                .reasoning {
-                    font-size: 0.9rem;
+                .signal-reason {
+                    font-size: 0.813rem;
                     color: var(--text-secondary);
                     line-height: 1.5;
-                }
-
-                .section-title {
-                    font-size: 1.1rem;
-                    font-weight: 600;
-                    margin-bottom: 20px;
-                    color: var(--text-primary);
-                }
-
-                .intel-list {
-                    flex: 1;
-                    overflow-y: auto;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 16px;
-                    padding-right: 8px; /* Space for scrollbar */
-                }
-
-                .intel-item {
-                    display: flex;
-                    gap: 12px;
-                    padding-bottom: 16px;
-                    border-bottom: 1px solid var(--border-color);
-                }
-                
-                .intel-item:last-child { border-bottom: none; }
-
-                .sentiment-dot {
-                    width: 8px;
-                    height: 8px;
-                    border-radius: 50%;
-                    margin-top: 6px;
-                    flex-shrink: 0;
-                }
-
-                .sentiment-dot.bullish { background: var(--green); }
-                .sentiment-dot.bearish { background: var(--red); }
-                .sentiment-dot.neutral { background: var(--yellow); }
-
-                .intel-content {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 4px;
-                }
-
-                .intel-headline {
-                    font-size: 0.95rem;
-                    font-weight: 500;
-                    color: var(--text-primary);
-                    line-height: 1.4;
                     margin: 0;
                 }
 
+                .prediction-strip {
+                    padding: 10px 12px;
+                    background: var(--bg-app);
+                    border-radius: var(--radius-md);
+                    border: 1px solid var(--border-color);
+                }
+
+                .pred-row {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 4px;
+                }
+
+                .pred-label {
+                    font-size: 0.688rem;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    color: var(--primary-blue);
+                    letter-spacing: 0.03em;
+                }
+
+                .pred-val {
+                    font-weight: 700;
+                    font-size: 0.813rem;
+                }
+
+                .pred-val.green { color: var(--green); }
+                .pred-val.red { color: var(--red); }
+                .pred-val.yellow { color: var(--yellow); }
+
+                .pred-driver {
+                    font-size: 0.75rem;
+                    color: var(--text-secondary);
+                }
+
+                /* Intel */
+                .intel-list {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+                }
+
+                .intel-row {
+                    display: flex;
+                    gap: 10px;
+                    padding-bottom: 12px;
+                    border-bottom: 1px solid var(--border-color);
+                }
+
+                .intel-row:last-child { border-bottom: none; padding-bottom: 0; }
+
+                .dot {
+                    width: 6px;
+                    height: 6px;
+                    border-radius: 50%;
+                    margin-top: 7px;
+                    flex-shrink: 0;
+                }
+
+                .dot.bullish { background: var(--green); }
+                .dot.bearish { background: var(--red); }
+                .dot.neutral { background: var(--yellow); }
+
+                .intel-text {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 3px;
+                    min-width: 0;
+                }
+
+                .intel-headline {
+                    font-size: 0.813rem;
+                    font-weight: 500;
+                    color: var(--text-primary);
+                    line-height: 1.4;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                }
+
                 .intel-meta {
-                    font-size: 0.8rem;
+                    font-size: 0.75rem;
                     color: var(--text-tertiary);
+                }
+
+                .empty-msg {
+                    padding: 20px;
+                    text-align: center;
+                    color: var(--text-tertiary);
+                    font-size: 0.875rem;
+                }
+
+                /* ── Responsive ── */
+                @media (max-width: 1280px) {
+                    .dash-grid {
+                        grid-template-columns: 200px 1fr 280px;
+                    }
+                }
+
+                @media (max-width: 1024px) {
+                    .dash-grid {
+                        display: flex;
+                        flex-direction: column;
+                    }
+
+                    .dash-chart {
+                        order: 1;
+                        min-height: 400px;
+                    }
+
+                    .dash-watchlist {
+                        order: 2;
+                        max-height: 300px;
+                    }
+
+                    .dash-right {
+                        order: 3;
+                    }
+                }
+
+                @media (max-width: 640px) {
+                    .dash-header {
+                        flex-direction: column;
+                        align-items: stretch;
+                        gap: 12px;
+                        padding: 12px 16px;
+                    }
+
+                    .dash-header-left {
+                        flex-wrap: wrap;
+                        gap: 10px;
+                    }
+
+                    .symbol-select {
+                        font-size: 1rem;
+                        padding: 6px 28px 6px 10px;
+                    }
+
+                    .price-value {
+                        font-size: 1.25rem;
+                    }
+
+                    .refresh-btn {
+                        align-self: flex-end;
+                    }
+
+                    .dash-chart {
+                        min-height: 320px;
+                    }
                 }
             `}</style>
         </div>

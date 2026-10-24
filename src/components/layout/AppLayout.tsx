@@ -4,6 +4,7 @@ import React from 'react';
 import { usePathname } from 'next/navigation';
 import Sidebar from '@/components/layout/Sidebar';
 import Navbar from '@/components/layout/Navbar';
+import MobileBottomNav from '@/components/layout/MobileBottomNav';
 import { useSignalAlerts } from '@/hooks/useSignalAlerts';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
@@ -27,6 +28,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 <Navbar />
                 <main className="page-content">{children}</main>
             </div>
+            <MobileBottomNav />
         </div>
     );
 }

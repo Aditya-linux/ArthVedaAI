@@ -1,7 +1,8 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
-import { Sun, Moon, ArrowRight, ArrowUpRight } from 'lucide-react'
+import { Sun, Moon, ArrowRight, ArrowUpRight, Menu, X, BarChart3, Newspaper, Zap, Activity, FileText } from 'lucide-react'
 import { useTheme } from '@/context/ThemeContext'
 import Image from 'next/image'
 
@@ -17,34 +18,102 @@ export default function LandingPage() {
 
 /* ──────────── Header ──────────── */
 function Header() {
-  return (
-    <nav className="fixed w-full top-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-xl border-b border-zinc-100 dark:border-zinc-900 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        {/* Logo */}
-        <div className="flex items-center gap-2.5">
-          <Image src="/icon.jpeg" alt="ArthVeda AI" width={40} height={40} className="rounded-lg shadow-sm flex-shrink-0 object-cover" />
-          <span className="font-bold text-lg tracking-tight text-zinc-900 dark:text-white">ArthVeda AI</span>
-        </div>
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-        {/* Center Links */}
+  return (
+    <nav className="fixed w-full top-0 z-50 bg-white/90 dark:bg-black/90 backdrop-blur-xl border-b border-zinc-100 dark:border-zinc-900 transition-colors duration-300">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2.5">
+          <Image src="/icon.jpeg" alt="ArthVeda AI" width={36} height={36} className="rounded-lg shadow-sm flex-shrink-0 object-cover" />
+          <span className="font-bold text-lg tracking-tight text-zinc-900 dark:text-white">ArthVeda AI</span>
+        </Link>
+
+        {/* Center Links (Desktop) */}
         <div className="hidden md:flex items-center gap-8">
-          <Link href="/dashboard" className="text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">Terminal</Link>
-          <Link href="/news" className="text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">News</Link>
-          <Link href="/simulator" className="text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">Simulator</Link>
-          <Link href="/signals" className="text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">Signals</Link>
+          <Link href="/dashboard" className="text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">Terminal</Link>
+          <Link href="/news" className="text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">News</Link>
+          <Link href="/reports" className="text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">SEC Filings</Link>
+          <Link href="/signals" className="text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">Signals</Link>
+          <Link href="/simulator" className="text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">Simulator</Link>
         </div>
 
         {/* Right */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <ThemeToggle />
           <Link
             href="/dashboard"
-            className="px-5 py-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-sm font-semibold rounded-full hover:opacity-90 transition-all shadow-lg shadow-zinc-900/10 dark:shadow-white/10"
+            className="hidden sm:inline-flex px-4 sm:px-5 py-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-xs sm:text-sm font-semibold rounded-full hover:opacity-90 transition-all shadow-md"
           >
-            Get Started
+            Launch Terminal
           </Link>
+
+          {/* Mobile Hamburger Button */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
+            aria-label="Toggle navigation menu"
+          >
+            {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
         </div>
       </div>
+
+      {/* Mobile Drawer Menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden border-b border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-xl px-4 py-4 space-y-2 animate-fade-in-up">
+          <Link
+            href="/dashboard"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-900"
+          >
+            <BarChart3 size={18} className="text-blue-500" />
+            Terminal / Dashboard
+          </Link>
+          <Link
+            href="/news"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-900"
+          >
+            <Newspaper size={18} className="text-blue-500" />
+            Market Intelligence Feed
+          </Link>
+          <Link
+            href="/reports"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-900"
+          >
+            <FileText size={18} className="text-blue-500" />
+            SEC Filings & Reports NLP
+          </Link>
+          <Link
+            href="/signals"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-900"
+          >
+            <Activity size={18} className="text-blue-500" />
+            AI Trade Signals & Prediction
+          </Link>
+          <Link
+            href="/simulator"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-900"
+          >
+            <Zap size={18} className="text-blue-500" />
+            Paper Trading Simulator
+          </Link>
+          <div className="pt-2">
+            <Link
+              href="/dashboard"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-sm font-bold rounded-xl hover:opacity-90 transition-all shadow-md"
+            >
+              Get Started Now
+              <ArrowRight size={16} />
+            </Link>
+          </div>
+        </div>
+      )}
     </nav>
   )
 }
@@ -52,32 +121,32 @@ function Header() {
 /* ──────────── Hero Section ──────────── */
 function HeroSection() {
   return (
-    <section className="relative min-h-screen pt-16 flex flex-col">
+    <section className="relative min-h-screen pt-20 sm:pt-24 flex flex-col justify-center">
       {/* Background effects */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-blue-500/5 dark:bg-blue-500/10 rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-orange-500/5 dark:bg-orange-500/8 rounded-full blur-[100px]" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[320px] sm:w-[600px] lg:w-[800px] h-[320px] sm:h-[600px] lg:h-[800px] bg-blue-500/5 dark:bg-blue-500/10 rounded-full blur-[100px]" />
+        <div className="absolute bottom-0 right-0 w-[280px] sm:w-[500px] h-[280px] sm:h-[500px] bg-orange-500/5 dark:bg-orange-500/8 rounded-full blur-[90px]" />
       </div>
 
       {/* Main Grid */}
-      <div className="flex-1 max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10 py-16 lg:py-0">
+      <div className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 w-full grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-10 py-8 lg:py-12">
 
         {/* Left Column — Title + Subtext (spans 7 cols) */}
-        <div className="lg:col-span-7 flex flex-col justify-end lg:justify-center gap-8">
+        <div className="lg:col-span-7 flex flex-col justify-center gap-6 sm:gap-8">
           {/* Live Badge */}
           <div className="animate-fade-in-up">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs font-medium text-zinc-600 dark:text-zinc-400">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs font-semibold text-zinc-700 dark:text-zinc-300">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
               </span>
-              AI-Powered Sentiment Engine
+              FinBERT Financial NLP & Sentiment Engine
             </div>
           </div>
 
           {/* Massive Headline */}
           <div className="animate-fade-in-up-delay-1">
-            <h1 className="text-5xl sm:text-6xl lg:text-[5.5rem] xl:text-[6.5rem] font-black tracking-tighter leading-[0.9] uppercase">
+            <h1 className="text-4xl sm:text-6xl lg:text-[5rem] xl:text-[5.75rem] font-black tracking-tight leading-[0.95] uppercase">
               <span className="block text-zinc-900 dark:text-white">SMARTER</span>
               <span className="block text-zinc-900 dark:text-white">WAY TO</span>
               <span className="block text-zinc-400 dark:text-zinc-500">THINK</span>
@@ -88,42 +157,42 @@ function HeroSection() {
 
           {/* Subtext */}
           <div className="animate-fade-in-up-delay-2 max-w-lg">
-            <p className="text-base lg:text-lg text-zinc-500 dark:text-zinc-400 leading-relaxed">
-              ArthVeda AI processes 50,000+ financial news sources per second using advanced NLP to give you real-time sentiment signals and trade recommendations.
+            <p className="text-sm sm:text-base lg:text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed">
+              ArthVeda AI analyzes real-time statutory SEC 10-K filings, earnings transcripts, and global financial news using domain-adapted transformer NLP to forecast directional market sentiment.
             </p>
           </div>
 
           {/* CTA Buttons */}
-          <div className="animate-fade-in-up-delay-3 flex flex-col sm:flex-row items-start gap-4">
+          <div className="animate-fade-in-up-delay-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 w-full">
             <Link
               href="/dashboard"
-              className="group inline-flex items-center gap-2 px-8 py-4 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-bold rounded-xl hover:opacity-90 transition-all shadow-xl shadow-zinc-900/10 dark:shadow-white/10"
+              className="group inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-bold rounded-xl hover:opacity-90 transition-all text-sm sm:text-base shadow-lg shadow-zinc-900/10 dark:shadow-white/10"
             >
-              START TRADING TODAY
+              LAUNCH TRADING TERMINAL
               <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
-              href="/dashboard"
-              className="inline-flex items-center gap-2 px-8 py-4 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 font-semibold rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-all"
+              href="/simulator"
+              className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 font-semibold rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-all text-sm sm:text-base text-center"
             >
-              View Live Demo
+              Paper Trading Simulator
             </Link>
           </div>
         </div>
 
         {/* Right Column — Stats + 3D Visual (spans 5 cols) */}
-        <div className="lg:col-span-5 flex flex-col gap-0 h-full justify-center">
+        <div className="lg:col-span-5 flex flex-col gap-6 justify-center">
 
           {/* 3D Wireframe Visual */}
-          <div className="relative w-full aspect-square max-w-md mx-auto mb-8 lg:mb-0">
+          <div className="relative w-full aspect-square max-w-[280px] sm:max-w-md mx-auto">
             <TorusWireframe />
           </div>
 
           {/* Statistics Panel */}
-          <div className="border border-zinc-200 dark:border-zinc-800 rounded-2xl divide-y divide-zinc-200 dark:divide-zinc-800 bg-white/50 dark:bg-zinc-950/50 backdrop-blur-sm animate-fade-in-up-delay-2">
-            <StatItem value="319.9K+" label="Active Trading Accounts" />
-            <StatItem value="82.6K+" label="Rewarded Traders" />
-            <StatItem value="$4.2B+" label="Total Trading Volume" />
+          <div className="border border-zinc-200 dark:border-zinc-800 rounded-2xl divide-y divide-zinc-200 dark:divide-zinc-800 bg-white/70 dark:bg-zinc-950/70 backdrop-blur-sm animate-fade-in-up-delay-2 shadow-sm">
+            <StatItem value="93.8%" label="FinBERT Benchmark Accuracy" />
+            <StatItem value="18 hrs" label="Half-Life Sentiment Decay" />
+            <StatItem value="50K+" label="Filings & Articles Indexed" />
           </div>
         </div>
       </div>
@@ -209,10 +278,10 @@ function TorusWireframe() {
       </svg>
 
       {/* Floating data points */}
-      <div className="absolute top-8 right-8 px-3 py-1.5 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-[11px] font-mono text-green-600 dark:text-green-400 shadow-lg animate-float" style={{ animationDelay: '1s' }}>
+      <div className="absolute top-4 sm:top-8 right-2 sm:right-8 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-[10px] sm:text-[11px] font-mono text-green-600 dark:text-green-400 shadow-md animate-float" style={{ animationDelay: '1s' }}>
         +2.47%
       </div>
-      <div className="absolute bottom-12 left-4 px-3 py-1.5 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-[11px] font-mono text-blue-600 dark:text-blue-400 shadow-lg animate-float" style={{ animationDelay: '2s' }}>
+      <div className="absolute bottom-6 sm:bottom-12 left-2 sm:left-4 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-[10px] sm:text-[11px] font-mono text-blue-600 dark:text-blue-400 shadow-md animate-float" style={{ animationDelay: '2s' }}>
         Bullish 87%
       </div>
     </div>

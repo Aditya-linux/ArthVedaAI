@@ -60,16 +60,13 @@ export default function ActivePositionsCard() {
                         background: var(--primary-blue);
                         color: white;
                         font-weight: 600;
-                        font-size: 0.9rem;
+                        font-size: 0.85rem;
                         text-decoration: none;
                         border-radius: var(--radius-full);
-                        transition: all 0.2s;
-                        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
+                        transition: opacity 0.15s ease;
                     }
                     .btn-start-trading:hover {
-                        background: #2563eb;
-                        transform: translateY(-1px);
-                        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);
+                        opacity: 0.9;
                     }
                 `}</style>
             </div>

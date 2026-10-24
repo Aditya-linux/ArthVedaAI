@@ -326,14 +326,12 @@ export default function SignalsPage() {
                         border: 1px solid var(--border-color);
                         border-radius: var(--radius-lg, 12px);
                         overflow: hidden;
-                        transition: all 0.3s ease;
-                        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+                        transition: border-color 0.15s ease;
+                        box-shadow: var(--shadow-card);
                         height: fit-content;
                     }
                     .signal-card:hover {
-                        border-color: var(--primary-blue);
-                        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-                        transform: translateY(-2px);
+                        border-color: var(--text-tertiary);
                     }
 
                     .card-main {
@@ -616,7 +614,6 @@ export default function SignalsPage() {
                     }
                     .news-item:hover {
                         border-color: var(--text-tertiary);
-                        transform: translateX(2px);
                     }
                     .news-content { flex: 1; min-width: 0; }
                     .news-headline {

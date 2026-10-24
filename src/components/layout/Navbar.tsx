@@ -211,20 +211,19 @@ const Navbar = () => {
             display: flex;
             align-items: center;
             gap: 6px;
-            padding: 8px 18px;
-            background: #3B82F6;
+            padding: 7px 16px;
+            background: var(--primary-blue);
             color: white;
             border: none;
             border-radius: var(--radius-full);
-            font-size: 0.85rem;
+            font-size: 0.813rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: opacity 0.15s ease;
             font-family: inherit;
         }
         .sign-in-btn:hover {
-            background: #2563EB;
-            transform: translateY(-1px);
+            opacity: 0.9;
         }
 
         /* User Menu */

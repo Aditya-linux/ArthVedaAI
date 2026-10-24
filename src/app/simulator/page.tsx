@@ -99,12 +99,35 @@ export default function SimulatorPage() {
     const canAfford = marginRequired <= state.account.freeMargin;
     const isTradingDisabled = !marketStatus.isOpen || !priceData || !canAfford;
 
+    // Edit modal state
+    const [editingPosition, setEditingPosition] = useState<string | null>(null);
+    const [editSL, setEditSL] = useState('');
+    const [editTP, setEditTP] = useState('');
+
+    const openEditModal = (posId: string, currentSL: number | null, currentTP: number | null) => {
+        setEditingPosition(posId);
+        setEditSL(currentSL?.toString() || '');
+        setEditTP(currentTP?.toString() || '');
+    };
+
+    const handleEditSave = () => {
+        if (!editingPosition) return;
+        modifyPosition(
+            editingPosition,
+            editSL ? parseFloat(editSL) : (editSL === '' ? null : undefined),
+            editTP ? parseFloat(editTP) : (editTP === '' ? null : undefined)
+        );
+        setEditingPosition(null);
+        toast.success('Position updated');
+    };
+
     return (
         <AuthGuard>
-            <div className="simulator-page">
-                <div className="header-row">
-                    <div className="header-title">
-                        <Activity size={24} className="icon-pulse" />
+            <div className="sim">
+                {/* Header */}
+                <div className="sim-header">
+                    <div className="sim-header-left">
+                        <Activity size={20} className="icon-blue" />
                         <h1>Paper Trading</h1>
                     </div>
                     <button className="btn-reset" onClick={resetAccount}>
@@ -112,101 +135,120 @@ export default function SimulatorPage() {
                     </button>
                 </div>
 
-                {/* 1. Account Overview Panel */}
-                <div className="stats-panel card">
-                    <div className="stat-item main-balance">
-                        <span className="label">Total Balance</span>
-                        <span className="value">${formatPrice(state.account.balance)}</span>
+                {/* Account Stats */}
+                <div className="stats-row">
+                    <div className="stat-box main">
+                        <span className="stat-label">Total Balance</span>
+                        <span className="stat-val">${formatPrice(state.account.balance)}</span>
                     </div>
-                    <div className="stat-item">
-                        <span className="label">Equity</span>
-                        <span className="value">${formatPrice(state.account.equity)}</span>
+                    <div className="stat-box">
+                        <span className="stat-label">Equity</span>
+                        <span className="stat-val">${formatPrice(state.account.equity)}</span>
                     </div>
-                    <div className="stat-item">
-                        <span className="label">Total P&L</span>
-                        <span className={`value ${state.account.totalPnL >= 0 ? 'pos' : 'neg'}`}>
+                    <div className="stat-box">
+                        <span className="stat-label">Total P&L</span>
+                        <span className={`stat-val ${state.account.totalPnL >= 0 ? 'green' : 'red'}`}>
                             {state.account.totalPnL >= 0 ? '+' : ''}${Math.abs(state.account.totalPnL).toFixed(2)}
                         </span>
                     </div>
-                    <div className="stat-item">
-                        <span className="label">Free Margin</span>
-                        <span className="value">${formatPrice(state.account.freeMargin)}</span>
+                    <div className="stat-box">
+                        <span className="stat-label">Free Margin</span>
+                        <span className="stat-val">${formatPrice(state.account.freeMargin)}</span>
                     </div>
-                    <div className="stat-item">
-                        <span className="label">Win Rate</span>
-                        <span className="value">{state.account.winRate.toFixed(1)}%</span>
+                    <div className="stat-box">
+                        <span className="stat-label">Win Rate</span>
+                        <span className="stat-val">{state.account.winRate.toFixed(1)}%</span>
                     </div>
                 </div>
 
-                {/* 2. Trading Section (Widget + Order Box) */}
-                <div className="trading-section">
-                    {/* Chart Widget */}
-                    <div className="chart-box card" style={{ padding: 0, overflow: 'hidden', minHeight: '600px' }}>
+                {/* Trading Area */}
+                <div className="trade-area">
+                    <div className="chart-panel card" style={{ padding: 0, overflow: 'hidden' }}>
                         <TradingViewWidget symbol={symbol} />
                     </div>
 
-                    {/* Order Box */}
-                    <div className="order-box card">
-                        <h3 className="section-title">Trade Simulation</h3>
+                    <div className="order-panel card">
+                        <h3 className="panel-title">Trade Simulation</h3>
 
-                        {/* Market Status Banner */}
-                        <div className={`status-banner ${marketStatus.isOpen ? 'open' : 'closed'}`}>
+                        <div className={`status-bar ${marketStatus.isOpen ? 'open' : 'closed'}`}>
                             {marketStatus.isOpen ? <Unlock size={14} /> : <Lock size={14} />}
-                            {marketStatus.message}
+                            <span>{marketStatus.message}</span>
                         </div>
 
-                        <div className="asset-select">
-                            <label className="input-label">Select Asset</label>
-                            <select className="select-input" value={symbol} onChange={e => setSymbol(e.target.value)}>
+                        <div className="form-group">
+                            <label className="form-label">Select Asset</label>
+                            <select className="form-input" value={symbol} onChange={e => setSymbol(e.target.value)}>
                                 {ASSETS.map(a => <option key={a.s} value={a.s}>{a.s} - {a.n}</option>)}
                             </select>
                         </div>
 
-                        <div className="price-live">
-                            <span className="label">Current Price</span>
-                            <span className={`price ${priceData?.change && priceData.change >= 0 ? 'pos' : 'neg'}`}>
+                        <div className="live-price-row">
+                            <span className="form-label">Current Price</span>
+                            <span className={`live-price ${priceData?.change && priceData.change >= 0 ? 'green' : 'red'}`}>
                                 ${priceData ? formatPrice(priceData.price) : '---'}
                             </span>
                         </div>
 
-                        <div className="tabs-capsule">
-                            <button className={`cap-btn buy ${side === 'BUY' ? 'active' : ''}`} onClick={() => setSide('BUY')}>BUY</button>
-                            <button className={`cap-btn sell ${side === 'SELL' ? 'active' : ''}`} onClick={() => setSide('SELL')}>SELL</button>
+                        <div className="side-toggle">
+                            <button className={`side-btn buy ${side === 'BUY' ? 'active' : ''}`} onClick={() => setSide('BUY')}>BUY</button>
+                            <button className={`side-btn sell ${side === 'SELL' ? 'active' : ''}`} onClick={() => setSide('SELL')}>SELL</button>
                         </div>
 
                         <div className="form-row">
-                            <div className="field">
-                                <label>Quantity</label>
-                                <input type="number" min="1" value={quantity} onChange={e => setQuantity(Number(e.target.value))} />
+                            <div className="form-group">
+                                <label className="form-label">Quantity</label>
+                                <input className="form-input" type="number" min="1" value={quantity} onChange={e => setQuantity(Number(e.target.value))} />
                             </div>
-                            <div className="field">
-                                <label>Leverage</label>
-                                <select value={leverage} onChange={e => setLeverage(Number(e.target.value))}>
+                            <div className="form-group">
+                                <label className="form-label">Leverage</label>
+                                <select className="form-input" value={leverage} onChange={e => setLeverage(Number(e.target.value))}>
                                     {LEVERAGES.map(l => <option key={l} value={l}>1:{l}</option>)}
                                 </select>
                             </div>
                         </div>
 
-                        <div className="margin-check">
+                        <div className="margin-info">
                             <span>Required Margin: <strong>${formatPrice(marginRequired)}</strong></span>
-                            {!canAfford && <span className="warning">Insufficient Funds</span>}
+                            {!canAfford && <span className="warn">Insufficient Funds</span>}
                         </div>
 
                         <button
-                            className={`action-btn ${side === 'BUY' ? 'buy-btn' : 'sell-btn'}`}
+                            className={`place-btn ${side === 'BUY' ? 'buy' : 'sell'}`}
                             onClick={handlePlaceOrder}
                             disabled={isTradingDisabled}
-                            title={!marketStatus.isOpen ? 'Market is Closed' : 'Place Order'}
                         >
                             {!marketStatus.isOpen ? 'MARKET CLOSED' : `${side} ${symbol}`}
                         </button>
                     </div>
                 </div>
 
-                {/* 3. History & Positions */}
-                <div className="history-section card">
-                    <h3 className="section-title">Active Positions & History</h3>
-                    <div className="table-responsive">
+                {/* Edit Modal */}
+                {editingPosition && (
+                    <div className="modal-overlay" onClick={() => setEditingPosition(null)}>
+                        <div className="modal-box" onClick={e => e.stopPropagation()}>
+                            <h4 className="modal-title">Edit Stop Loss / Take Profit</h4>
+                            <div className="modal-form">
+                                <div className="form-group">
+                                    <label className="form-label">Stop Loss (empty to remove)</label>
+                                    <input className="form-input" type="number" step="any" value={editSL} onChange={e => setEditSL(e.target.value)} placeholder="e.g. 150.50" />
+                                </div>
+                                <div className="form-group">
+                                    <label className="form-label">Take Profit (empty to remove)</label>
+                                    <input className="form-input" type="number" step="any" value={editTP} onChange={e => setEditTP(e.target.value)} placeholder="e.g. 180.00" />
+                                </div>
+                            </div>
+                            <div className="modal-actions">
+                                <button className="modal-btn cancel" onClick={() => setEditingPosition(null)}>Cancel</button>
+                                <button className="modal-btn save" onClick={handleEditSave}>Save</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Positions / History Table */}
+                <div className="card history-section">
+                    <h3 className="panel-title">Active Positions & History</h3>
+                    <div className="table-wrap">
                         <table className="data-table">
                             <thead>
                                 <tr>
@@ -217,92 +259,48 @@ export default function SimulatorPage() {
                                     <th>Entry</th>
                                     <th>Current/Close</th>
                                     <th>P&L</th>
-                                    <th>Action/Status</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {[...state.positions].reverse().map(p => (
-                                    <tr key={p.id} className="row-open">
+                                    <tr key={p.id}>
                                         <td>{new Date(p.openTime).toLocaleTimeString()}</td>
                                         <td><strong>{p.symbol}</strong></td>
-                                        <td><span className={`badge ${p.side === 'BUY' ? 'b-buy' : 'b-sell'}`}>{p.side}</span></td>
+                                        <td><span className={`side-tag ${p.side === 'BUY' ? 'buy' : 'sell'}`}>{p.side}</span></td>
                                         <td>{p.quantity}</td>
-                                        <td>${p.entryPrice.toFixed(2)}</td>
-                                        <td>${p.currentPrice.toFixed(2)}</td>
-                                        <td className={p.pnl >= 0 ? 'pos' : 'neg'}>{p.pnl >= 0 ? '+' : ''}{p.pnl.toFixed(2)}</td>
+                                        <td className="mono">${p.entryPrice.toFixed(2)}</td>
+                                        <td className="mono">${p.currentPrice.toFixed(2)}</td>
+                                        <td className={p.pnl >= 0 ? 'green' : 'red'}>{p.pnl >= 0 ? '+' : ''}{p.pnl.toFixed(2)}</td>
                                         <td>
-                                            <div className="action-group">
+                                            <div className="action-btns">
                                                 <button
-                                                    className="btn-edit"
-                                                    onClick={() => {
-                                                        toast.custom(
-                                                            (t) => (
-                                                                <div className={`toast-modal ${t.visible ? 'animate-in' : 'animate-out'}`}>
-                                                                    <div className="modal-header">
-                                                                        <h4>Edit Orders: {p.symbol}</h4>
-                                                                    </div>
-                                                                    <form onSubmit={(e) => {
-                                                                        e.preventDefault();
-                                                                        const formData = new FormData(e.currentTarget);
-                                                                        const sl = formData.get('sl') as string;
-                                                                        const tp = formData.get('tp') as string;
-
-                                                                        modifyPosition(
-                                                                            p.id,
-                                                                            sl ? parseFloat(sl) : (sl === '' ? null : undefined),
-                                                                            tp ? parseFloat(tp) : (tp === '' ? null : undefined)
-                                                                        );
-                                                                        toast.dismiss(t.id);
-                                                                        toast.success(`Updated orders for ${p.symbol}`);
-                                                                    }}>
-                                                                        <div className="modal-body">
-                                                                            <div className="field">
-                                                                                <label>Stop Loss (leave empty to remove)</label>
-                                                                                <input name="sl" type="number" step="any" defaultValue={p.stopLoss?.toString() || ''} placeholder="e.g. 150.50" />
-                                                                            </div>
-                                                                            <div className="field">
-                                                                                <label>Take Profit (leave empty to remove)</label>
-                                                                                <input name="tp" type="number" step="any" defaultValue={p.takeProfit?.toString() || ''} placeholder="e.g. 180.00" />
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="modal-footer">
-                                                                            <button type="button" className="btn-cancel" onClick={() => toast.dismiss(t.id)}>Cancel</button>
-                                                                            <button type="submit" className="btn-submit">Save</button>
-                                                                        </div>
-                                                                    </form>
-                                                                </div>
-                                                            ),
-                                                            { duration: Infinity, position: 'top-center' }
-                                                        );
-                                                    }}
+                                                    className="act-btn edit"
+                                                    onClick={() => openEditModal(p.id, p.stopLoss, p.takeProfit)}
                                                     disabled={!marketStatus.isOpen}
-                                                >
-                                                    Edit
-                                                </button>
+                                                >Edit</button>
                                                 <button
-                                                    className="btn-close"
+                                                    className="act-btn close"
                                                     onClick={() => {
                                                         closePosition(p.id, p.currentPrice);
                                                         toast.success(`Closed position for ${p.symbol}`);
                                                     }}
                                                     disabled={!marketStatus.isOpen}
-                                                >
-                                                    Close
-                                                </button>
+                                                >Close</button>
                                             </div>
                                         </td>
                                     </tr>
                                 ))}
                                 {[...state.history].reverse().map(h => (
-                                    <tr key={h.id} className="row-history">
+                                    <tr key={h.id} className="row-closed">
                                         <td>{new Date(h.closeTime).toLocaleTimeString()}</td>
                                         <td>{h.symbol}</td>
-                                        <td><span className={`badge ${h.side === 'BUY' ? 'b-buy' : 'b-sell'}`}>{h.side}</span></td>
+                                        <td><span className={`side-tag ${h.side === 'BUY' ? 'buy' : 'sell'}`}>{h.side}</span></td>
                                         <td>{h.quantity}</td>
-                                        <td>${h.entryPrice.toFixed(2)}</td>
-                                        <td>${h.closePrice.toFixed(2)}</td>
-                                        <td className={h.pnl >= 0 ? 'pos' : 'neg'}>{h.pnl >= 0 ? '+' : ''}{h.pnl.toFixed(2)}</td>
-                                        <td><span className="status-closed">CLOSED</span></td>
+                                        <td className="mono">${h.entryPrice.toFixed(2)}</td>
+                                        <td className="mono">${h.closePrice.toFixed(2)}</td>
+                                        <td className={h.pnl >= 0 ? 'green' : 'red'}>{h.pnl >= 0 ? '+' : ''}{h.pnl.toFixed(2)}</td>
+                                        <td><span className="closed-tag">CLOSED</span></td>
                                     </tr>
                                 ))}
                                 {state.positions.length === 0 && state.history.length === 0 && (
@@ -314,389 +312,432 @@ export default function SimulatorPage() {
                 </div>
 
                 <style jsx>{`
-                .simulator-page {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 24px;
-                }
-
-                .header-row {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                }
-
-                .header-title {
-                    display: flex;
-                    align-items: center;
-                    gap: 12px;
-                }
-
-                .header-title h1 {
-                    font-size: 1.5rem;
-                    font-weight: 700;
-                    margin: 0;
-                }
-
-                .icon-pulse { color: var(--primary-blue); }
-
-                .btn-reset {
-                    background: none;
-                    border: 1px solid var(--border-color);
-                    padding: 6px 12px;
-                    border-radius: var(--radius-full);
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    gap: 6px;
-                    font-size: 0.85rem;
-                    color: var(--text-secondary);
-                }
-
-                /* Stats Panel */
-                .stats-panel {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-                    gap: 24px;
-                    padding: 24px 32px;
-                }
-
-                .stat-item {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 4px;
-                }
-
-                .stat-item .label {
-                    font-size: 0.8rem;
-                    color: var(--text-tertiary);
-                    font-weight: 600;
-                    text-transform: uppercase;
-                    letter-spacing: 0.5px;
-                }
-
-                .stat-item .value {
-                    font-size: 1.5rem;
-                    font-weight: 700;
-                    color: var(--text-primary);
-                    font-family: var(--font-mono);
-                }
-
-                .stat-item .value.pos { color: var(--green); }
-                .stat-item .value.neg { color: var(--red); }
-
-                /* Trading Section */
-                .trading-section {
-                    display: grid;
-                    grid-template-columns: 2fr 1fr;
-                    gap: 24px;
-                    min-height: 600px;
-                }
-
-                .chart-box {
-                    display: flex;
-                    flex-direction: column;
-                    /* padding removed for widget */
-                }
-
-                .order-box {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 20px;
-                    padding: 24px;
-                }
-
-                .status-banner {
-                    display: flex;
-                    align-items: center;
-                    gap: 8px;
-                    padding: 8px 12px;
-                    border-radius: var(--radius-sm);
-                    font-size: 0.85rem;
-                    font-weight: 600;
-                    margin-bottom: 8px;
-                }
-
-                .status-banner.open {
-                    background: var(--green-bg);
-                    color: var(--green);
-                }
-
-                .status-banner.closed {
-                    background: var(--red-bg);
-                    color: var(--red);
-                }
-
-                .section-title {
-                    font-size: 1rem;
-                    font-weight: 700;
-                    color: var(--text-primary);
-                    margin: 0;
-                }
-
-                .input-label {
-                    display: block;
-                    font-size: 0.85rem;
-                    color: var(--text-secondary);
-                    margin-bottom: 6px;
-                    font-weight: 500;
-                }
-
-                .select-input, .field input, .field select {
-                    width: 100%;
-                    padding: 10px;
-                    border: 1px solid var(--border-color);
-                    border-radius: var(--radius-md);
-                    background: var(--bg-app);
-                    color: var(--text-primary);
-                    font-family: var(--font-sans);
-                }
-
-                .price-live {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    padding: 12px;
-                    background: var(--bg-app);
-                    border-radius: var(--radius-md);
-                }
-                
-                .price-live .price {
-                    font-size: 1.2rem;
-                    font-weight: 700;
-                }
-
-                .price.pos { color: var(--green); }
-                .price.neg { color: var(--red); }
-
-                .tabs-capsule {
-                    display: flex;
-                    background: var(--bg-app);
-                    padding: 4px;
-                    border-radius: var(--radius-md);
-                }
-
-                .cap-btn {
-                    flex: 1;
-                    padding: 8px;
-                    border: none;
-                    background: transparent;
-                    color: var(--text-secondary);
-                    font-weight: 700;
-                    border-radius: var(--radius-sm);
-                    cursor: pointer;
-                    transition: all 0.2s;
-                }
-
-                .cap-btn.buy.active { background: var(--green-bg); color: var(--green); }
-                .cap-btn.sell.active { background: var(--red-bg); color: var(--red); }
-
-                .form-row {
-                    display: flex;
-                    gap: 12px;
-                }
-
-                .field { flex: 1; }
-
-                .margin-check {
-                    font-size: 0.8rem;
-                    color: var(--text-tertiary);
-                    display: flex;
-                    justify-content: space-between;
-                }
-
-                .warning { color: var(--red); font-weight: 600; }
-
-                .action-btn {
-                    width: 100%;
-                    padding: 14px;
-                    border: none;
-                    border-radius: var(--radius-full);
-                    font-size: 1rem;
-                    font-weight: 700;
-                    cursor: pointer;
-                    color: white;
-                    margin-top: auto;
-                    transition: all 0.2s;
-                }
-
-                .buy-btn { background: var(--green); }
-                .sell-btn { background: var(--red); }
-                .action-btn:disabled { opacity: 0.5; cursor: not-allowed; background: var(--text-tertiary); }
-
-                /* History Section */
-                .history-section {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 16px;
-                }
-
-                .data-table {
-                    width: 100%;
-                    border-collapse: collapse;
-                    font-size: 0.9rem;
-                }
-
-                .data-table th {
-                    text-align: left;
-                    padding: 12px;
-                    border-bottom: 2px solid var(--border-color);
-                    color: var(--text-secondary);
-                    font-weight: 600;
-                }
-
-                .data-table td {
-                    padding: 12px;
-                    border-bottom: 1px solid var(--border-color);
-                    color: var(--text-primary);
-                }
-                
-                .pos { color: var(--green);   font-weight: 600;}
-                .neg { color: var(--red); font-weight: 600;}
-
-                .badge {
-                    padding: 2px 8px;
-                    border-radius: 4px;
-                    font-size: 0.75rem;
-                    font-weight: 700;
-                }
-                
-                .b-buy { background: var(--green-bg); color: var(--green); }
-                .b-sell { background: var(--red-bg); color: var(--red); }
-
-                .btn-close {
-                    padding: 4px 12px;
-                    border: 1px solid var(--red);
-                    background: var(--red-bg);
-                    color: var(--red);
-                    border-radius: 12px;
-                    cursor: pointer;
-                    font-size: 0.75rem;
-                    font-weight: 600;
-                }
-
-                .btn-close:hover:not(:disabled) {
-                    background: var(--red-bg);
-                    color: var(--red);
-                    border-color: var(--red-bg);
-                }
-                
-                .btn-close:disabled { opacity: 0.5; cursor: not-allowed; }
-
-                .action-group {
-                    display: flex;
-                    gap: 8px;
-                }
-
-                .btn-edit {
-                    padding: 4px 12px;
-                    border: 1px solid var(--border-color);
-                    background: var(--bg-surface);
-                    border-radius: 12px;
-                    cursor: pointer;
-                    font-size: 0.75rem;
-                    color: var(--text-secondary);
-                }
-
-                .btn-edit:hover:not(:disabled) {
-                    background: var(--bg-app);
-                    color: var(--primary-blue);
-                    border-color: var(--primary-blue);
-                }
-
-                .empty-cell { text-align: center; color: var(--text-tertiary); padding: 24px; }
-                .status-closed { color: var(--text-tertiary); font-size: 0.8rem; }
-
-                .table-responsive {
-                    overflow-x: auto;
-                    -webkit-overflow-scrolling: touch;
-                }
-
-                @media (max-width: 1024px) {
-                    .trading-section {
-                        grid-template-columns: 1fr;
-                        min-height: auto;
-                    }
-                    
-                    .chart-box {
-                        min-height: 450px !important;
-                    }
-                    
-                    .stats-panel {
-                        grid-template-columns: 1fr 1fr;
-                        padding: 16px;
-                    }
-                    
-                    .header-row {
+                    .sim {
+                        display: flex;
                         flex-direction: column;
-                        align-items: flex-start;
                         gap: 16px;
                     }
-                    
-                    .btn-reset {
-                        width: 100%;
-                        justify-content: center;
-                    }
-                }
 
-                /* Toast Modal */
-                :global(.toast-modal) {
-                    background: var(--bg-surface);
-                    border: 1px solid var(--border-color);
-                    border-radius: var(--radius-lg);
-                    padding: 20px;
-                    width: 350px;
-                    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
-                    pointer-events: auto;
-                }
-                :global(.modal-header h4) {
-                    margin: 0 0 16px 0;
-                    font-size: 1.1rem;
-                    color: var(--text-primary);
-                }
-                :global(.modal-body) {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 12px;
-                    margin-bottom: 20px;
-                }
-                :global(.modal-footer) {
-                    display: flex;
-                    justify-content: flex-end;
-                    gap: 10px;
-                }
-                :global(.btn-cancel) {
-                    padding: 8px 16px;
-                    background: transparent;
-                    border: 1px solid var(--border-color);
-                    color: var(--text-secondary);
-                    border-radius: var(--radius-md);
-                    cursor: pointer;
-                    font-weight: 600;
-                }
-                :global(.btn-submit) {
-                    padding: 8px 16px;
-                    background: var(--primary-blue);
-                    border: none;
-                    color: white;
-                    border-radius: var(--radius-md);
-                    cursor: pointer;
-                    font-weight: 600;
-                }
-                :global(.toast-modal input) {
-                    width: 100%;
-                    padding: 8px 12px;
-                    border: 1px solid var(--border-color);
-                    border-radius: var(--radius-sm);
-                    background: var(--bg-app);
-                    color: var(--text-primary);
-                    margin-top: 4px;
-                }
-                :global(.toast-modal label) {
-                    font-size: 0.8rem;
-                    color: var(--text-secondary);
-                }
-            `}</style>
+                    .sim-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        flex-wrap: wrap;
+                        gap: 12px;
+                    }
+
+                    .sim-header-left {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                    }
+
+                    .sim-header-left h1 {
+                        font-size: 1.25rem;
+                        font-weight: 700;
+                        margin: 0;
+                    }
+
+                    .icon-blue { color: var(--primary-blue); }
+
+                    .btn-reset {
+                        background: none;
+                        border: 1px solid var(--border-color);
+                        padding: 6px 14px;
+                        border-radius: var(--radius-full);
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        gap: 6px;
+                        font-size: 0.813rem;
+                        color: var(--text-secondary);
+                        font-family: var(--font-sans);
+                        transition: border-color 0.15s;
+                    }
+
+                    .btn-reset:hover { border-color: var(--text-tertiary); }
+
+                    /* Stats */
+                    .stats-row {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                        gap: 12px;
+                    }
+
+                    .stat-box {
+                        background: var(--bg-surface);
+                        border: 1px solid var(--border-color);
+                        border-radius: var(--radius-md);
+                        padding: 14px 16px;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 4px;
+                    }
+
+                    .stat-label {
+                        font-size: 0.688rem;
+                        color: var(--text-tertiary);
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        letter-spacing: 0.04em;
+                    }
+
+                    .stat-val {
+                        font-size: 1.125rem;
+                        font-weight: 700;
+                        color: var(--text-primary);
+                        font-family: var(--font-mono);
+                    }
+
+                    .stat-val.green { color: var(--green); }
+                    .stat-val.red { color: var(--red); }
+
+                    /* Trade Area */
+                    .trade-area {
+                        display: grid;
+                        grid-template-columns: 1fr 340px;
+                        gap: 16px;
+                        min-height: 500px;
+                    }
+
+                    .chart-panel {
+                        min-height: 500px;
+                    }
+
+                    .order-panel {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 14px;
+                    }
+
+                    .panel-title {
+                        font-size: 0.938rem;
+                        font-weight: 700;
+                        color: var(--text-primary);
+                        margin: 0;
+                    }
+
+                    .status-bar {
+                        display: flex;
+                        align-items: center;
+                        gap: 6px;
+                        padding: 8px 12px;
+                        border-radius: var(--radius-sm);
+                        font-size: 0.75rem;
+                        font-weight: 600;
+                    }
+
+                    .status-bar.open { background: var(--green-bg); color: var(--green); }
+                    .status-bar.closed { background: var(--red-bg); color: var(--red); }
+
+                    .form-group { display: flex; flex-direction: column; gap: 4px; }
+
+                    .form-label {
+                        font-size: 0.75rem;
+                        color: var(--text-secondary);
+                        font-weight: 500;
+                    }
+
+                    .form-input {
+                        width: 100%;
+                        padding: 8px 10px;
+                        border: 1px solid var(--border-color);
+                        border-radius: var(--radius-md);
+                        background: var(--bg-app);
+                        color: var(--text-primary);
+                        font-family: var(--font-sans);
+                        font-size: 0.875rem;
+                    }
+
+                    .form-input:focus {
+                        outline: 2px solid var(--primary-blue);
+                        outline-offset: 1px;
+                    }
+
+                    .live-price-row {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        padding: 10px 12px;
+                        background: var(--bg-app);
+                        border-radius: var(--radius-md);
+                    }
+
+                    .live-price {
+                        font-size: 1.125rem;
+                        font-weight: 700;
+                        font-family: var(--font-mono);
+                    }
+
+                    .live-price.green { color: var(--green); }
+                    .live-price.red { color: var(--red); }
+
+                    .side-toggle {
+                        display: flex;
+                        background: var(--bg-app);
+                        padding: 3px;
+                        border-radius: var(--radius-md);
+                        gap: 3px;
+                    }
+
+                    .side-btn {
+                        flex: 1;
+                        padding: 8px;
+                        border: none;
+                        background: transparent;
+                        color: var(--text-secondary);
+                        font-weight: 700;
+                        border-radius: var(--radius-sm);
+                        cursor: pointer;
+                        transition: all 0.15s;
+                        font-size: 0.813rem;
+                        font-family: var(--font-sans);
+                    }
+
+                    .side-btn.buy.active { background: var(--green-bg); color: var(--green); }
+                    .side-btn.sell.active { background: var(--red-bg); color: var(--red); }
+
+                    .form-row { display: flex; gap: 10px; }
+                    .form-row > .form-group { flex: 1; }
+
+                    .margin-info {
+                        font-size: 0.75rem;
+                        color: var(--text-tertiary);
+                        display: flex;
+                        justify-content: space-between;
+                    }
+
+                    .warn { color: var(--red); font-weight: 600; }
+
+                    .place-btn {
+                        width: 100%;
+                        padding: 12px;
+                        border: none;
+                        border-radius: var(--radius-md);
+                        font-size: 0.875rem;
+                        font-weight: 700;
+                        cursor: pointer;
+                        color: white;
+                        margin-top: auto;
+                        transition: opacity 0.15s;
+                        font-family: var(--font-sans);
+                    }
+
+                    .place-btn.buy { background: var(--green); }
+                    .place-btn.sell { background: var(--red); }
+                    .place-btn:disabled { opacity: 0.4; cursor: not-allowed; background: var(--text-tertiary); }
+
+                    /* Modal */
+                    .modal-overlay {
+                        position: fixed;
+                        top: 0; left: 0; right: 0; bottom: 0;
+                        background: rgba(0, 0, 0, 0.5);
+                        z-index: 1000;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 16px;
+                    }
+
+                    .modal-box {
+                        background: var(--bg-surface);
+                        border: 1px solid var(--border-color);
+                        border-radius: var(--radius-lg);
+                        padding: 24px;
+                        width: 100%;
+                        max-width: 380px;
+                        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                    }
+
+                    .modal-title {
+                        font-size: 1rem;
+                        font-weight: 700;
+                        margin: 0 0 16px 0;
+                        color: var(--text-primary);
+                    }
+
+                    .modal-form {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 12px;
+                        margin-bottom: 20px;
+                    }
+
+                    .modal-actions {
+                        display: flex;
+                        justify-content: flex-end;
+                        gap: 8px;
+                    }
+
+                    .modal-btn {
+                        padding: 8px 16px;
+                        border-radius: var(--radius-md);
+                        font-weight: 600;
+                        font-size: 0.813rem;
+                        cursor: pointer;
+                        font-family: var(--font-sans);
+                    }
+
+                    .modal-btn.cancel {
+                        background: transparent;
+                        border: 1px solid var(--border-color);
+                        color: var(--text-secondary);
+                    }
+
+                    .modal-btn.save {
+                        background: var(--primary-blue);
+                        border: none;
+                        color: white;
+                    }
+
+                    /* History */
+                    .history-section { overflow: hidden; }
+
+                    .table-wrap {
+                        overflow-x: auto;
+                        -webkit-overflow-scrolling: touch;
+                    }
+
+                    .data-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        font-size: 0.813rem;
+                        min-width: 700px;
+                    }
+
+                    .data-table th {
+                        text-align: left;
+                        padding: 10px 12px;
+                        border-bottom: 2px solid var(--border-color);
+                        color: var(--text-secondary);
+                        font-weight: 600;
+                        font-size: 0.75rem;
+                        text-transform: uppercase;
+                        letter-spacing: 0.03em;
+                    }
+
+                    .data-table td {
+                        padding: 10px 12px;
+                        border-bottom: 1px solid var(--border-color);
+                        color: var(--text-primary);
+                    }
+
+                    .mono { font-family: var(--font-mono); }
+                    .green { color: var(--green); font-weight: 600; }
+                    .red { color: var(--red); font-weight: 600; }
+
+                    .side-tag {
+                        padding: 2px 8px;
+                        border-radius: 4px;
+                        font-size: 0.688rem;
+                        font-weight: 700;
+                    }
+
+                    .side-tag.buy { background: var(--green-bg); color: var(--green); }
+                    .side-tag.sell { background: var(--red-bg); color: var(--red); }
+
+                    .action-btns { display: flex; gap: 6px; }
+
+                    .act-btn {
+                        padding: 4px 10px;
+                        border-radius: var(--radius-sm);
+                        font-size: 0.688rem;
+                        font-weight: 600;
+                        cursor: pointer;
+                        font-family: var(--font-sans);
+                        transition: opacity 0.15s;
+                    }
+
+                    .act-btn.edit {
+                        border: 1px solid var(--border-color);
+                        background: var(--bg-surface);
+                        color: var(--text-secondary);
+                    }
+
+                    .act-btn.close {
+                        border: 1px solid var(--red);
+                        background: var(--red-bg);
+                        color: var(--red);
+                    }
+
+                    .act-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+                    .closed-tag {
+                        font-size: 0.688rem;
+                        color: var(--text-tertiary);
+                        font-weight: 500;
+                    }
+
+                    .row-closed td { opacity: 0.6; }
+
+                    .empty-cell {
+                        text-align: center;
+                        color: var(--text-tertiary);
+                        padding: 24px;
+                    }
+
+                    /* Responsive */
+                    @media (max-width: 1024px) {
+                        .trade-area {
+                            grid-template-columns: 1fr;
+                        }
+
+                        .chart-panel {
+                            min-height: 380px;
+                        }
+                    }
+
+                    @media (max-width: 768px) {
+                        .stats-row {
+                            grid-template-columns: repeat(2, 1fr);
+                            gap: 10px;
+                        }
+
+                        .stat-box.main {
+                            grid-column: 1 / -1;
+                        }
+
+                        .stat-box {
+                            padding: 10px 14px;
+                        }
+
+                        .stat-val {
+                            font-size: 1.05rem;
+                        }
+
+                        .sim-header {
+                            flex-direction: column;
+                            align-items: stretch;
+                            gap: 8px;
+                        }
+
+                        .btn-reset {
+                            width: 100%;
+                            justify-content: center;
+                        }
+
+                        .form-input {
+                            padding: 10px 12px;
+                            font-size: 0.938rem;
+                        }
+
+                        .side-btn {
+                            padding: 10px;
+                            font-size: 0.875rem;
+                        }
+
+                        .place-btn {
+                            padding: 14px;
+                            font-size: 0.938rem;
+                        }
+                    }
+
+                    @media (max-width: 480px) {
+                        .form-row {
+                            flex-direction: column;
+                        }
+                    }
+                `}</style>
             </div>
         </AuthGuard>
     );

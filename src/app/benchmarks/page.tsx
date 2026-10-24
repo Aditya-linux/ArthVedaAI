@@ -627,8 +627,31 @@ export default function BenchmarksPage() {
                 .result-bar.bearish { background: var(--red); }
                 .result-bar.neutral { background: #EAB308; }
 
+                .table-responsive,
+                .matrix-table-wrap {
+                    overflow-x: auto;
+                    -webkit-overflow-scrolling: touch;
+                    width: 100%;
+                }
+
                 @media (max-width: 900px) {
                     .dual-grid { grid-template-columns: 1fr; }
+                }
+
+                @media (max-width: 640px) {
+                    .page-header, .table-card, .algorithm-card, .matrix-card, .correlation-card, .tester-card {
+                        padding: 16px;
+                    }
+                    .page-title {
+                        font-size: 1.25rem;
+                    }
+                    .benchmark-table {
+                        min-width: 580px;
+                    }
+                    .test-btn {
+                        width: 100%;
+                        justify-content: center;
+                    }
                 }
             `}</style>
         </div>
