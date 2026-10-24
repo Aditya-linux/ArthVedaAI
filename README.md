@@ -3,7 +3,6 @@
 **MSc Computer Science Project Submission**  
 **Topic:** Financial NLP: Apply NLP to financial news, reports and market sentiment prediction  
 **Live Production URL:** [https://arth-veda-ai-t7y9.vercel.app/](https://arth-veda-ai-t7y9.vercel.app/)  
-**Repository:** [https://github.com/Aditya-linux/ArthVedaAI](https://github.com/Aditya-linux/ArthVedaAI)
 
 ---
 
@@ -151,8 +150,6 @@ Backtested across 1,200 trading sessions on S&P 500 equities:
 
 ### 1. Run Web Application Locally
 ```bash
-git clone https://github.com/Aditya-linux/ArthVedaAI.git
-cd ArthVedaAI
 npm install
 npm run dev
 ```
