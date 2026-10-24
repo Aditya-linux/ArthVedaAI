@@ -152,32 +152,123 @@ export default function BenchmarksPage() {
                             A production-grade algorithmic bridge that converts raw textual FinBERT polarity into smoothed, risk-adjusted market directional probabilities.
                         </p>
 
+                        {/* Master Integrated Formulation Box */}
+                        <div className="master-formula-panel">
+                            <div className="master-formula-header">
+                                <span className="master-badge">MASTER OBJECTIVE KERNEL</span>
+                                <span className="master-sub">Continuous Time-Decayed Sentiment Momentum Integration</span>
+                            </div>
+                            <div className="master-math-row">
+                                <div className="master-math-equation">
+                                    <span className="m-var">SMI</span>
+                                    <span className="m-eq">=</span>
+                                    <div className="m-frac m-frac-lg">
+                                        <div className="m-num">
+                                            <div className="m-sigma-group">
+                                                <span className="m-sigma-top">N</span>
+                                                <span className="m-sigma-symbol">∑</span>
+                                                <span className="m-sigma-bot">j=1</span>
+                                            </div>
+                                            <span className="m-paren">(</span>
+                                            <span className="m-var">w</span><sub className="m-sub">decay</sub><sup>(j)</sup>
+                                            <span className="m-dot">·</span>
+                                            <span className="m-var">w</span><sub className="m-sub">source</sub><sup>(j)</sup>
+                                            <span className="m-dot">·</span>
+                                            <span className="m-var">C</span><sup>(j)</sup>
+                                            <span className="m-paren">)</span>
+                                            <span className="m-dot">·</span>
+                                            <span className="m-var">S</span><sup>(j)</sup>
+                                        </div>
+                                        <div className="m-den">
+                                            <div className="m-sigma-group">
+                                                <span className="m-sigma-top">N</span>
+                                                <span className="m-sigma-symbol">∑</span>
+                                                <span className="m-sigma-bot">j=1</span>
+                                            </div>
+                                            <span className="m-paren">(</span>
+                                            <span className="m-var">w</span><sub className="m-sub">decay</sub><sup>(j)</sup>
+                                            <span className="m-dot">·</span>
+                                            <span className="m-var">w</span><sub className="m-sub">source</sub><sup>(j)</sup>
+                                            <span className="m-dot">·</span>
+                                            <span className="m-var">C</span><sup>(j)</sup>
+                                            <span className="m-paren">)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div className="algo-steps-grid">
                             <div className="algo-step-box">
                                 <span className="step-num">Step 1</span>
                                 <h4>Temporal Exponential Decay</h4>
-                                <p className="formula">w_decay = e^(-(ln 2 / t_half) * delta_t)</p>
+                                <div className="math-display">
+                                    <span className="m-var">w</span><sub className="m-sub">decay</sub>
+                                    <span className="m-eq">=</span>
+                                    <span className="m-var">e</span>
+                                    <sup className="m-sup">
+                                        <span className="m-neg">−</span>
+                                        <span className="m-paren">(</span>
+                                        <span className="m-frac">
+                                            <span className="m-num">ln 2</span>
+                                            <span className="m-den">t<sub className="m-sub">½</sub></span>
+                                        </span>
+                                        <span className="m-paren">)</span>
+                                        <span className="m-dot">·</span>
+                                        <span className="m-greek">Δ</span><span className="m-var">t</span>
+                                    </sup>
+                                </div>
                                 <p className="step-explain">Weights recent news with an 18-hour half-life kernel. Fresh breaking developments dominate older, priced-in market headlines.</p>
                             </div>
 
                             <div className="algo-step-box">
                                 <span className="step-num">Step 2</span>
                                 <h4>Shannon Information Entropy</h4>
-                                <p className="formula">Certainty = 1 - (-sum(p_i * log3 p_i))</p>
+                                <div className="math-display">
+                                    <span className="m-var">C</span>
+                                    <span className="m-eq">=</span>
+                                    <span className="m-num-const">1</span>
+                                    <span className="m-op">+</span>
+                                    <div className="m-sigma-group m-sigma-sm">
+                                        <span className="m-sigma-top">3</span>
+                                        <span className="m-sigma-symbol">∑</span>
+                                        <span className="m-sigma-bot">i=1</span>
+                                    </div>
+                                    <span className="m-var">p</span><sub className="m-sub">i</sub>
+                                    <span className="m-func">log</span><sub className="m-sub">3</sub>
+                                    <span className="m-paren">(</span><span className="m-var">p</span><sub className="m-sub">i</sub><span className="m-paren">)</span>
+                                </div>
                                 <p className="step-explain">Penalizes ambiguous classifications where the model is split (e.g. 33/33/33), giving priority to high-conviction events.</p>
                             </div>
 
                             <div className="algo-step-box">
                                 <span className="step-num">Step 3</span>
                                 <h4>Source Credibility Weighting</h4>
-                                <p className="formula">w_total = w_decay * w_source * Certainty</p>
+                                <div className="math-display">
+                                    <span className="m-var">w</span><sub className="m-sub">total</sub>
+                                    <span className="m-eq">=</span>
+                                    <span className="m-var">w</span><sub className="m-sub">decay</sub>
+                                    <span className="m-times">×</span>
+                                    <span className="m-var">w</span><sub className="m-sub">source</sub>
+                                    <span className="m-times">×</span>
+                                    <span className="m-var">C</span>
+                                </div>
                                 <p className="step-explain">Calibrates statutory SEC 10-K/10-Q filings (1.35x) and Tier-1 terminals (Bloomberg/Reuters, 1.2x) over unverified internet blogs.</p>
                             </div>
 
                             <div className="algo-step-box">
                                 <span className="step-num">Step 4</span>
                                 <h4>Calibrated Logistic Projection</h4>
-                                <p className="formula">P(Y = +1) = 1 / (1 + e^(-0.045 * Score))</p>
+                                <div className="math-display">
+                                    <span className="m-var">P</span><span className="m-paren">(</span><span className="m-var">Y</span><span className="m-eq">=</span><span className="m-num-const">+1</span><span className="m-paren">)</span>
+                                    <span className="m-eq">=</span>
+                                    <span className="m-frac">
+                                        <span className="m-num">1</span>
+                                        <span className="m-den">
+                                            1 + <span className="m-var">e</span><sup className="m-sup"><span className="m-neg">−</span>k <span className="m-dot">·</span> <span className="m-var">SMI</span></sup>
+                                        </span>
+                                    </span>
+                                </div>
                                 <p className="step-explain">Combines the normalized SMI with RSI, MACD, and Bollinger Bands to output a calibrated directional movement probability.</p>
                             </div>
                         </div>
@@ -389,15 +480,220 @@ export default function BenchmarksPage() {
                     font-weight: 700;
                 }
 
-                .formula {
-                    font-family: var(--font-mono, monospace);
-                    font-size: 0.78rem;
-                    color: var(--green);
+                /* ── Master Formula Panel ── */
+                .master-formula-panel {
                     background: var(--bg-surface);
-                    padding: 4px 8px;
-                    border-radius: 4px;
-                    margin: 0;
                     border: 1px solid var(--border-color);
+                    border-radius: var(--radius-lg);
+                    padding: 20px 24px;
+                    margin: 8px 0 20px 0;
+                    box-shadow: var(--shadow-soft);
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+                }
+
+                .master-formula-header {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    flex-wrap: wrap;
+                }
+
+                .master-badge {
+                    font-size: 0.688rem;
+                    font-weight: 700;
+                    color: var(--primary-blue);
+                    background: rgba(37, 99, 235, 0.08);
+                    padding: 3px 10px;
+                    border-radius: var(--radius-full);
+                    letter-spacing: 0.06em;
+                }
+
+                .master-sub {
+                    font-size: 0.813rem;
+                    color: var(--text-secondary);
+                    font-weight: 500;
+                }
+
+                .master-math-row {
+                    overflow-x: auto;
+                    -webkit-overflow-scrolling: touch;
+                    padding: 8px 4px;
+                }
+
+                .master-math-equation {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-family: 'Cambria Math', 'STIX Two Math', 'Times New Roman', serif;
+                    font-size: 1.15rem;
+                    color: var(--text-primary);
+                    white-space: nowrap;
+                }
+
+                /* ── Step Math Display Box ── */
+                .math-display {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 12px 14px;
+                    background: var(--bg-surface);
+                    border: 1px solid var(--border-color);
+                    border-radius: var(--radius-md);
+                    font-family: 'Cambria Math', 'STIX Two Math', 'Times New Roman', serif;
+                    font-size: 1.05rem;
+                    color: var(--text-primary);
+                    margin: 4px 0 6px 0;
+                    overflow-x: auto;
+                    -webkit-overflow-scrolling: touch;
+                    min-height: 58px;
+                    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+                }
+
+                /* Math Typography Tokens */
+                .m-var {
+                    font-style: italic;
+                    font-weight: 600;
+                    color: var(--text-primary);
+                    padding: 0 1px;
+                }
+
+                .m-sub {
+                    font-size: 0.68em;
+                    font-style: normal;
+                    font-family: var(--font-sans);
+                    color: var(--text-secondary);
+                    vertical-align: sub;
+                    margin-left: 1px;
+                }
+
+                .m-sup {
+                    font-size: 0.72em;
+                    font-style: normal;
+                    color: var(--text-primary);
+                    vertical-align: super;
+                    margin-left: 1px;
+                    display: inline-flex;
+                    align-items: center;
+                }
+
+                .m-eq {
+                    margin: 0 6px;
+                    color: var(--text-secondary);
+                    font-weight: 400;
+                }
+
+                .m-op, .m-dot {
+                    margin: 0 3px;
+                    color: var(--text-secondary);
+                }
+
+                .m-times {
+                    margin: 0 4px;
+                    color: var(--text-secondary);
+                    font-size: 0.85em;
+                }
+
+                .m-neg {
+                    font-weight: 600;
+                    margin-right: 1px;
+                }
+
+                .m-paren {
+                    font-size: 1.1em;
+                    color: var(--text-secondary);
+                    font-weight: 300;
+                }
+
+                .m-greek {
+                    font-style: normal;
+                    font-weight: 700;
+                    margin-right: 1px;
+                }
+
+                .m-func {
+                    font-family: var(--font-sans);
+                    font-weight: 600;
+                    font-size: 0.85em;
+                    color: var(--text-primary);
+                    margin-left: 2px;
+                }
+
+                .m-num-const {
+                    font-weight: 600;
+                    color: var(--text-primary);
+                }
+
+                /* Mathematical Fractions */
+                .m-frac {
+                    display: inline-flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    vertical-align: middle;
+                    text-align: center;
+                    padding: 0 3px;
+                    font-size: 0.88em;
+                    line-height: 1.1;
+                }
+
+                .m-frac-lg {
+                    font-size: 0.95em;
+                    padding: 0 6px;
+                }
+
+                .m-num {
+                    border-bottom: 1.5px solid var(--text-primary);
+                    padding: 2px 6px;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 100%;
+                }
+
+                .m-den {
+                    padding: 3px 6px 1px 6px;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 100%;
+                }
+
+                /* Sigma Summation Notation */
+                .m-sigma-group {
+                    display: inline-flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    margin: 0 4px;
+                    line-height: 0.85;
+                    vertical-align: middle;
+                }
+
+                .m-sigma-top {
+                    font-size: 0.55rem;
+                    font-weight: 700;
+                    font-family: var(--font-sans);
+                    color: var(--text-secondary);
+                }
+
+                .m-sigma-symbol {
+                    font-size: 1.35rem;
+                    font-weight: 400;
+                    line-height: 1;
+                    color: var(--text-primary);
+                }
+
+                .m-sigma-bot {
+                    font-size: 0.55rem;
+                    font-weight: 700;
+                    font-family: var(--font-sans);
+                    color: var(--text-secondary);
+                }
+
+                .m-sigma-sm .m-sigma-symbol {
+                    font-size: 1.15rem;
                 }
 
                 .step-explain {
