@@ -92,14 +92,14 @@ export default function SignalsPage() {
                 {/* Stats Row */}
                 <div className="stats-row">
                     {[
-                        { label: 'Buy', value: stats.buy, color: 'var(--green)' },
-                        { label: 'Sell', value: stats.sell, color: 'var(--red)' },
-                        { label: 'Hold', value: stats.hold, color: 'var(--yellow, #EAB308)' },
-                        { label: 'Avg Confidence', value: `${stats.avgConf}%`, color: 'var(--primary-blue)' },
+                        { label: 'Buy Signals', value: stats.buy },
+                        { label: 'Sell Signals', value: stats.sell },
+                        { label: 'Hold Signals', value: stats.hold },
+                        { label: 'Avg Confidence', value: `${stats.avgConf}%` },
                     ].map(s => (
                         <div key={s.label} className="stat-card">
                             <span className="stat-label">{s.label}</span>
-                            <span className="stat-value" style={{ color: s.color }}>{s.value}</span>
+                            <span className="stat-value">{s.value}</span>
                         </div>
                     ))}
                 </div>
@@ -122,7 +122,7 @@ export default function SignalsPage() {
                                         <div className="signal-meta">
                                             <span className="entry-price">${formatPrice(stock.signal.entryPrice)}</span>
                                             <span className="target-label">
-                                                Target: <span style={{ color: 'var(--green)' }}>${formatPrice(stock.signal.targetPrice)}</span>
+                                                Target: <span className="target-num">${formatPrice(stock.signal.targetPrice)}</span>
                                             </span>
                                         </div>
 
@@ -401,24 +401,43 @@ export default function SignalsPage() {
                         letter-spacing: 0.03em;
                     }
                     .signal-badge.buy {
-                        background: var(--green-bg);
-                        color: var(--green);
+                        background: #FFFFFF;
+                        color: #000000 !important;
+                        border: 1px solid #FFFFFF;
                     }
                     .signal-badge.sell {
-                        background: var(--red-bg);
-                        color: var(--red);
+                        background: rgba(255, 255, 255, 0.08);
+                        color: #FFFFFF !important;
+                        border: 1px solid rgba(255, 255, 255, 0.24);
                     }
                     .signal-badge.hold {
-                        background: rgba(234, 179, 8, 0.1);
-                        color: #EAB308;
+                        background: rgba(255, 255, 255, 0.03);
+                        color: #D4D4D8 !important;
+                        border: 1px dashed rgba(255, 255, 255, 0.2);
+                    }
+                    [data-theme='light'] .signal-badge.buy {
+                        background: #000000;
+                        color: #FFFFFF !important;
+                        border: 1px solid #000000;
+                    }
+                    [data-theme='light'] .signal-badge.sell {
+                        background: rgba(0, 0, 0, 0.06);
+                        color: #000000 !important;
+                        border: 1px solid rgba(0, 0, 0, 0.2);
+                    }
+                    [data-theme='light'] .signal-badge.hold {
+                        background: transparent;
+                        color: #52525B !important;
+                        border: 1px dashed rgba(0, 0, 0, 0.2);
                     }
                     .confidence-badge {
                         font-size: 0.75rem;
                         font-weight: 700;
-                        color: var(--primary-blue);
+                        color: var(--text-primary);
                         font-family: var(--font-mono, monospace);
                         padding: 4px 10px;
-                        background: rgba(59, 130, 246, 0.08);
+                        background: rgba(255, 255, 255, 0.08);
+                        border: 1px solid var(--border-color);
                         border-radius: var(--radius-full);
                     }
                     .expand-icon {
@@ -437,8 +456,9 @@ export default function SignalsPage() {
                         animation: pulse 1.5s ease-in-out infinite;
                     }
                     .error-pill {
-                        color: var(--red);
-                        background: var(--red-bg);
+                        color: var(--text-primary);
+                        background: rgba(255, 255, 255, 0.1);
+                        border: 1px solid var(--border-color);
                     }
                     @keyframes pulse {
                         0%, 100% { opacity: 1; }
@@ -481,8 +501,10 @@ export default function SignalsPage() {
                         font-family: var(--font-mono, monospace);
                         color: var(--text-primary);
                     }
-                    .detail-value.green { color: var(--green); }
-                    .detail-value.red { color: var(--red); }
+                    .detail-value.green,
+                    .detail-value.red {
+                        color: var(--text-primary) !important;
+                    }
 
                     .reasoning {
                         padding: 12px 14px;
@@ -500,8 +522,8 @@ export default function SignalsPage() {
 
                     .prediction-box {
                         padding: 14px 16px;
-                        background: rgba(59, 130, 246, 0.05);
-                        border: 1px solid rgba(59, 130, 246, 0.2);
+                        background: rgba(255, 255, 255, 0.03);
+                        border: 1px solid rgba(255, 255, 255, 0.12);
                         border-radius: var(--radius-sm, 8px);
                         margin-bottom: 16px;
                         display: flex;
@@ -520,20 +542,48 @@ export default function SignalsPage() {
                         font-weight: 700;
                         text-transform: uppercase;
                         letter-spacing: 0.05em;
-                        color: var(--primary-blue);
+                        color: var(--text-secondary);
                     }
 
                     .pred-forecast {
-                        font-size: 0.75rem;
+                        font-size: 0.72rem;
                         font-weight: 700;
                         padding: 2px 8px;
                         border-radius: var(--radius-full);
                         text-transform: uppercase;
                     }
 
-                    .pred-forecast.bullish { background: var(--green-bg); color: var(--green); }
-                    .pred-forecast.bearish { background: var(--red-bg); color: var(--red); }
-                    .pred-forecast.neutral { background: rgba(234, 179, 8, 0.1); color: #EAB308; }
+                    .pred-forecast.bullish {
+                        background: #FFFFFF;
+                        color: #000000 !important;
+                        border: 1px solid #FFFFFF;
+                    }
+                    .pred-forecast.bearish {
+                        background: rgba(255, 255, 255, 0.08);
+                        color: #FFFFFF !important;
+                        border: 1px solid rgba(255, 255, 255, 0.24);
+                    }
+                    .pred-forecast.neutral {
+                        background: rgba(255, 255, 255, 0.03);
+                        color: #D4D4D8 !important;
+                        border: 1px dashed rgba(255, 255, 255, 0.2);
+                    }
+
+                    [data-theme='light'] .pred-forecast.bullish {
+                        background: #000000;
+                        color: #FFFFFF !important;
+                        border: 1px solid #000000;
+                    }
+                    [data-theme='light'] .pred-forecast.bearish {
+                        background: rgba(0, 0, 0, 0.06);
+                        color: #000000 !important;
+                        border: 1px solid rgba(0, 0, 0, 0.2);
+                    }
+                    [data-theme='light'] .pred-forecast.neutral {
+                        background: transparent;
+                        color: #52525B !important;
+                        border: 1px dashed rgba(0, 0, 0, 0.2);
+                    }
 
                     .pred-driver {
                         font-size: 0.82rem;
@@ -580,9 +630,12 @@ export default function SignalsPage() {
                         border-radius: 3px;
                         transition: width 0.5s ease;
                     }
-                    .confidence-fill.high { background: var(--green); }
-                    .confidence-fill.medium { background: #EAB308; }
-                    .confidence-fill.low { background: var(--red); }
+                    .confidence-fill.high { background: #FFFFFF; }
+                    .confidence-fill.medium { background: rgba(255, 255, 255, 0.6); }
+                    .confidence-fill.low { background: rgba(255, 255, 255, 0.25); }
+                    [data-theme='light'] .confidence-fill.high { background: #000000; }
+                    [data-theme='light'] .confidence-fill.medium { background: rgba(0, 0, 0, 0.5); }
+                    [data-theme='light'] .confidence-fill.low { background: rgba(0, 0, 0, 0.2); }
 
                     /* News */
                     .news-section h4 {
@@ -635,7 +688,7 @@ export default function SignalsPage() {
                     .news-source {
                         font-size: 0.7rem;
                         font-weight: 600;
-                        color: var(--primary-blue);
+                        color: var(--text-secondary);
                     }
                     .news-time {
                         font-size: 0.68rem;
@@ -653,16 +706,35 @@ export default function SignalsPage() {
                         letter-spacing: 0.03em;
                     }
                     .sentiment-pill.bullish {
-                        background: var(--green-bg);
-                        color: var(--green);
+                        background: #FFFFFF;
+                        color: #000000 !important;
+                        border: 1px solid #FFFFFF;
                     }
                     .sentiment-pill.bearish {
-                        background: var(--red-bg);
-                        color: var(--red);
+                        background: rgba(255, 255, 255, 0.08);
+                        color: #FFFFFF !important;
+                        border: 1px solid rgba(255, 255, 255, 0.24);
                     }
                     .sentiment-pill.neutral {
-                        background: rgba(234, 179, 8, 0.1);
-                        color: #EAB308;
+                        background: rgba(255, 255, 255, 0.03);
+                        color: #D4D4D8 !important;
+                        border: 1px dashed rgba(255, 255, 255, 0.2);
+                    }
+
+                    [data-theme='light'] .sentiment-pill.bullish {
+                        background: #000000;
+                        color: #FFFFFF !important;
+                        border: 1px solid #000000;
+                    }
+                    [data-theme='light'] .sentiment-pill.bearish {
+                        background: rgba(0, 0, 0, 0.06);
+                        color: #000000 !important;
+                        border: 1px solid rgba(0, 0, 0, 0.2);
+                    }
+                    [data-theme='light'] .sentiment-pill.neutral {
+                        background: transparent;
+                        color: #52525B !important;
+                        border: 1px dashed rgba(0, 0, 0, 0.2);
                     }
                     .news-link-icon {
                         color: var(--text-tertiary);

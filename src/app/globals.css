@@ -4,63 +4,67 @@
 
 :root,
 [data-theme='light'] {
-    --bg-app: #F8FAFC;
+    --bg-app: #F5F5F7;
     --bg-surface: #FFFFFF;
     --bg-card: #FFFFFF;
-    --bg-hover: #F1F5F9;
-    --text-primary: #0F172A;
-    --text-secondary: #64748B;
-    --text-tertiary: #94A3B8;
+    --bg-hover: #EBEBED;
+    --text-primary: #000000;
+    --text-secondary: #52525B;
+    --text-tertiary: #71717A;
 
-    --border-color: #E2E8F0;
+    --border-color: rgba(0, 0, 0, 0.09);
+    --border-subtle: rgba(0, 0, 0, 0.05);
     --shadow-soft: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
-    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04);
+    --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.06);
 
-    --primary-blue: #2563EB;
-    --accent-orange: #EA580C;
-    --accent-neon-blue: #3B82F6;
-    --accent-glow: rgba(37, 99, 235, 0.12);
+    --primary-blue: #000000;
+    --accent-orange: #18181B;
+    --accent-neon-blue: #27272A;
+    --accent-glow: rgba(0, 0, 0, 0.08);
 
-    --green: #10B981;
-    --green-bg: #ECFDF5;
-    --red: #EF4444;
-    --red-bg: #FEF2F2;
-    --yellow: #F59E0B;
-    --yellow-bg: #FFFBEB;
+    /* Strictly Black or White for text - No red/green/yellow! */
+    --green: #000000;
+    --green-bg: #EBEBED;
+    --red: #000000;
+    --red-bg: #E4E4E7;
+    --yellow: #000000;
+    --yellow-bg: #EBEBED;
 
-    --radius-lg: 12px;
-    --radius-md: 8px;
+    --radius-lg: 14px;
+    --radius-md: 10px;
     --radius-sm: 6px;
     --radius-full: 9999px;
 
-    --font-heading: 'DM Sans', sans-serif;
-    --font-sans: var(--font-outfit), 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    --font-mono: 'SF Mono', 'Fira Code', monospace;
+    --font-heading: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Helvetica Neue", -system-ui, sans-serif;
+    --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro", "Helvetica Neue", -system-ui, sans-serif;
+    --font-mono: "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 [data-theme='dark'] {
-    --bg-app: #0B0F19;
-    --bg-surface: #111827;
-    --bg-card: #111827;
-    --bg-hover: #1E293B;
-    --text-primary: #F3F4F6;
-    --text-secondary: #9CA3AF;
-    --text-tertiary: #6B7280;
+    --bg-app: #000000;
+    --bg-surface: #0E0E10;
+    --bg-card: #141416;
+    --bg-hover: #1C1C1F;
+    --text-primary: #FFFFFF;
+    --text-secondary: #A1A1AA;
+    --text-tertiary: #71717A;
 
-    --border-color: #1F2937;
-    --shadow-soft: 0 1px 3px rgba(0, 0, 0, 0.2);
-    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3);
-    --primary-blue: #3B82F6;
-    --accent-orange: #FB923C;
-    --accent-neon-blue: #60A5FA;
-    --accent-glow: rgba(96, 165, 250, 0.2);
+    --border-color: rgba(255, 255, 255, 0.12);
+    --border-subtle: rgba(255, 255, 255, 0.06);
+    --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.5);
+    --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.6);
+    --primary-blue: #FFFFFF;
+    --accent-orange: #E4E4E7;
+    --accent-neon-blue: #FFFFFF;
+    --accent-glow: rgba(255, 255, 255, 0.1);
 
-    --green: #10B981;
-    --green-bg: rgba(16, 185, 129, 0.12);
-    --red: #EF4444;
-    --red-bg: rgba(239, 68, 68, 0.12);
-    --yellow: #F59E0B;
-    --yellow-bg: rgba(245, 158, 11, 0.12);
+    /* Strictly Black or White for text - No red/green/yellow! */
+    --green: #FFFFFF;
+    --green-bg: rgba(255, 255, 255, 0.12);
+    --red: #FFFFFF;
+    --red-bg: rgba(255, 255, 255, 0.08);
+    --yellow: #FFFFFF;
+    --yellow-bg: rgba(255, 255, 255, 0.05);
 }
 
 * {
@@ -80,8 +84,10 @@ body {
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01", "ss02";
     line-height: 1.5;
+    letter-spacing: -0.012em;
     overflow-x: hidden;
 }
 
@@ -427,7 +433,7 @@ body {
     opacity: 0;
 }
 
-/* ── Badge Sentiment (shared) ── */
+/* ── Badge Sentiment (Apple High-Definition Monochrome) ── */
 .badge-bullish,
 .badge-bearish,
 .badge-neutral {
@@ -436,11 +442,49 @@ body {
     gap: 4px;
     padding: 3px 10px;
     border-radius: var(--radius-full);
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 600;
     text-transform: capitalize;
+    letter-spacing: 0.02em;
+    font-family: var(--font-sans);
 }
 
-.badge-bullish { background: var(--green-bg); color: var(--green); }
-.badge-bearish { background: var(--red-bg); color: var(--red); }
-.badge-neutral { background: var(--yellow-bg); color: var(--yellow); }
+.badge-bullish {
+    background: #FFFFFF;
+    color: #000000 !important;
+    font-weight: 700;
+    border: 1px solid #FFFFFF;
+    box-shadow: 0 1px 3px rgba(255, 255, 255, 0.15);
+}
+
+.badge-bearish {
+    background: rgba(255, 255, 255, 0.08);
+    color: #FFFFFF !important;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    font-weight: 600;
+}
+
+.badge-neutral {
+    background: rgba(255, 255, 255, 0.03);
+    color: #D4D4D8 !important;
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    font-weight: 500;
+}
+
+[data-theme='light'] .badge-bullish {
+    background: #000000;
+    color: #FFFFFF !important;
+    border: 1px solid #000000;
+}
+
+[data-theme='light'] .badge-bearish {
+    background: rgba(0, 0, 0, 0.06);
+    color: #000000 !important;
+    border: 1px solid rgba(0, 0, 0, 0.22);
+}
+
+[data-theme='light'] .badge-neutral {
+    background: transparent;
+    color: #52525B !important;
+    border: 1px dashed rgba(0, 0, 0, 0.2);
+}

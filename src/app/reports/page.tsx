@@ -380,10 +380,8 @@ export default function ReportsPage() {
                     color: var(--text-secondary);
                 }
 
-                .pos { color: var(--green); }
-                .neg { color: var(--red); }
-                .neu { color: var(--yellow, #EAB308); }
-                .text-blue { color: var(--primary-blue); }
+                .pos, .neg, .neu { color: var(--text-primary) !important; }
+                .text-blue { color: var(--text-primary) !important; }
 
                 .risk-bar-track {
                     height: 6px;
@@ -398,8 +396,10 @@ export default function ReportsPage() {
                     border-radius: 3px;
                 }
 
-                .low-risk { background: var(--green); }
-                .high-risk { background: var(--red); }
+                .low-risk { background: rgba(255, 255, 255, 0.4); }
+                .high-risk { background: #FFFFFF; }
+                [data-theme='light'] .low-risk { background: rgba(0, 0, 0, 0.3); }
+                [data-theme='light'] .high-risk { background: #000000; }
 
                 .sections-container {
                     display: flex;
@@ -430,7 +430,7 @@ export default function ReportsPage() {
                 }
 
                 .section-card:hover {
-                    border-color: var(--primary-blue);
+                    border-color: var(--text-tertiary);
                 }
 
                 .section-header {
@@ -461,16 +461,47 @@ export default function ReportsPage() {
                 }
 
                 .badge-pill {
-                    font-size: 0.75rem;
+                    font-size: 0.72rem;
                     font-weight: 700;
-                    padding: 4px 12px;
+                    padding: 3px 10px;
                     border-radius: var(--radius-full);
                     text-transform: uppercase;
+                    letter-spacing: 0.03em;
                 }
 
-                .badge-pill.bullish { background: var(--green-bg); color: var(--green); }
-                .badge-pill.bearish { background: var(--red-bg); color: var(--red); }
-                .badge-pill.neutral { background: rgba(234, 179, 8, 0.1); color: #EAB308; }
+                .badge-pill.bullish {
+                    background: #FFFFFF;
+                    color: #000000 !important;
+                    border: 1px solid #FFFFFF;
+                }
+                .badge-pill.bearish {
+                    background: rgba(255, 255, 255, 0.08);
+                    color: #FFFFFF !important;
+                    border: 1px solid rgba(255, 255, 255, 0.24);
+                    font-weight: 600;
+                }
+                .badge-pill.neutral {
+                    background: rgba(255, 255, 255, 0.03);
+                    color: #D4D4D8 !important;
+                    border: 1px dashed rgba(255, 255, 255, 0.2);
+                    font-weight: 500;
+                }
+
+                [data-theme='light'] .badge-pill.bullish {
+                    background: #000000;
+                    color: #FFFFFF !important;
+                    border: 1px solid #000000;
+                }
+                [data-theme='light'] .badge-pill.bearish {
+                    background: rgba(0, 0, 0, 0.06);
+                    color: #000000 !important;
+                    border: 1px solid rgba(0, 0, 0, 0.2);
+                }
+                [data-theme='light'] .badge-pill.neutral {
+                    background: transparent;
+                    color: #52525B !important;
+                    border: 1px dashed rgba(0, 0, 0, 0.2);
+                }
 
                 .section-body {
                     padding: 24px;
@@ -532,15 +563,43 @@ export default function ReportsPage() {
                 }
 
                 .chunk-badge {
-                    font-size: 0.7rem;
+                    font-size: 0.68rem;
                     font-weight: 700;
                     padding: 2px 8px;
                     border-radius: var(--radius-full);
                 }
 
-                .chunk-badge.bullish { background: var(--green-bg); color: var(--green); }
-                .chunk-badge.bearish { background: var(--red-bg); color: var(--red); }
-                .chunk-badge.neutral { background: rgba(234, 179, 8, 0.1); color: #EAB308; }
+                .chunk-badge.bullish {
+                    background: #FFFFFF;
+                    color: #000000 !important;
+                    border: 1px solid #FFFFFF;
+                }
+                .chunk-badge.bearish {
+                    background: rgba(255, 255, 255, 0.08);
+                    color: #FFFFFF !important;
+                    border: 1px solid rgba(255, 255, 255, 0.24);
+                }
+                .chunk-badge.neutral {
+                    background: rgba(255, 255, 255, 0.03);
+                    color: #D4D4D8 !important;
+                    border: 1px dashed rgba(255, 255, 255, 0.2);
+                }
+
+                [data-theme='light'] .chunk-badge.bullish {
+                    background: #000000;
+                    color: #FFFFFF !important;
+                    border: 1px solid #000000;
+                }
+                [data-theme='light'] .chunk-badge.bearish {
+                    background: rgba(0, 0, 0, 0.06);
+                    color: #000000 !important;
+                    border: 1px solid rgba(0, 0, 0, 0.2);
+                }
+                [data-theme='light'] .chunk-badge.neutral {
+                    background: transparent;
+                    color: #52525B !important;
+                    border: 1px dashed rgba(0, 0, 0, 0.2);
+                }
 
                 .chunk-snippet {
                     font-size: 0.82rem;

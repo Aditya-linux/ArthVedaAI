@@ -166,8 +166,24 @@ export default function ActivePositionsCard() {
                     border-radius: 4px;
                     text-transform: uppercase;
                 }
-                .side.buy { background: var(--green-bg); color: var(--green); }
-                .side.sell { background: var(--red-bg); color: var(--red); }
+                .side.buy {
+                    background: #FFFFFF;
+                    color: #000000 !important;
+                    border: 1px solid #FFFFFF;
+                }
+                .side.sell {
+                    background: rgba(255, 255, 255, 0.1);
+                    color: #FFFFFF !important;
+                    border: 1px solid rgba(255, 255, 255, 0.25);
+                }
+                [data-theme='light'] .side.buy {
+                    background: #000000;
+                    color: #FFFFFF !important;
+                }
+                [data-theme='light'] .side.sell {
+                    background: rgba(0, 0, 0, 0.08);
+                    color: #000000 !important;
+                }
 
                 .pos-metrics {
                     display: flex;
@@ -182,8 +198,7 @@ export default function ActivePositionsCard() {
                     font-size: 0.95rem;
                 }
 
-                .pos { color: var(--green); }
-                .neg { color: var(--red); }
+                .pos, .neg { color: var(--text-primary) !important; }
 
                 .price {
                     font-size: 0.8rem;

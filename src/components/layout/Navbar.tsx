@@ -206,24 +206,25 @@ const Navbar = () => {
             background: var(--border-color);
         }
 
-        /* Sign In Button */
+        /* Sign In Button (Apple Monochromatic Pill) */
         .sign-in-btn {
             display: flex;
             align-items: center;
             gap: 6px;
-            padding: 7px 16px;
-            background: var(--primary-blue);
-            color: white;
-            border: none;
+            padding: 7px 18px;
+            background: var(--text-primary);
+            color: var(--bg-app);
+            border: 1px solid var(--text-primary);
             border-radius: var(--radius-full);
             font-size: 0.813rem;
             font-weight: 600;
             cursor: pointer;
-            transition: opacity 0.15s ease;
+            transition: all 0.2s ease;
             font-family: inherit;
         }
         .sign-in-btn:hover {
-            opacity: 0.9;
+            opacity: 0.88;
+            transform: scale(0.98);
         }
 
         /* User Menu */
@@ -249,8 +250,8 @@ const Navbar = () => {
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #3B82F6, #6366F1);
-            color: white;
+            background: var(--text-primary);
+            color: var(--bg-app);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -309,8 +310,8 @@ const Navbar = () => {
             font-family: inherit;
         }
         .dropdown-item:hover {
-            background: var(--bg-app);
-            color: var(--red);
+            background: var(--bg-hover);
+            color: var(--text-primary);
         }
         
         @media (max-width: 768px) {

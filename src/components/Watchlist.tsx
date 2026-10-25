@@ -120,8 +120,8 @@ export default function Watchlist({ onSelect, currentSymbol }: WatchlistProps) {
                 }
                 .watchlist-item.active {
                     background: var(--bg-hover);
-                    border-color: var(--primary-blue);
-                    box-shadow: 0 0 0 1px var(--primary-blue);
+                    border-color: var(--text-primary);
+                    box-shadow: 0 0 0 1px var(--text-primary);
                 }
                 .item-info {
                     display: flex;
@@ -152,8 +152,8 @@ export default function Watchlist({ onSelect, currentSymbol }: WatchlistProps) {
                     opacity: 1;
                 }
                 .btn-remove:hover {
-                    background: var(--red-bg);
-                    color: var(--red);
+                    background: rgba(255, 255, 255, 0.1);
+                    color: var(--text-primary);
                 }
 
                 .watchlist-empty {

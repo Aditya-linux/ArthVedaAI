@@ -389,8 +389,10 @@ export default function SimulatorPage() {
                         font-family: var(--font-mono);
                     }
 
-                    .stat-val.green { color: var(--green); }
-                    .stat-val.red { color: var(--red); }
+                    .stat-val.green,
+                    .stat-val.red {
+                        color: var(--text-primary) !important;
+                    }
 
                     /* Trade Area */
                     .trade-area {
@@ -427,8 +429,24 @@ export default function SimulatorPage() {
                         font-weight: 600;
                     }
 
-                    .status-bar.open { background: var(--green-bg); color: var(--green); }
-                    .status-bar.closed { background: var(--red-bg); color: var(--red); }
+                    .status-bar.open {
+                        background: #FFFFFF;
+                        color: #000000 !important;
+                        border: 1px solid #FFFFFF;
+                    }
+                    .status-bar.closed {
+                        background: rgba(255, 255, 255, 0.06);
+                        color: #FFFFFF !important;
+                        border: 1px solid var(--border-color);
+                    }
+                    [data-theme='light'] .status-bar.open {
+                        background: #000000;
+                        color: #FFFFFF !important;
+                    }
+                    [data-theme='light'] .status-bar.closed {
+                        background: rgba(0, 0, 0, 0.06);
+                        color: #000000 !important;
+                    }
 
                     .form-group { display: flex; flex-direction: column; gap: 4px; }
 
@@ -450,7 +468,7 @@ export default function SimulatorPage() {
                     }
 
                     .form-input:focus {
-                        outline: 2px solid var(--primary-blue);
+                        outline: 2px solid var(--text-primary);
                         outline-offset: 1px;
                     }
 
@@ -461,16 +479,20 @@ export default function SimulatorPage() {
                         padding: 10px 12px;
                         background: var(--bg-app);
                         border-radius: var(--radius-md);
+                        border: 1px solid var(--border-color);
                     }
 
                     .live-price {
                         font-size: 1.125rem;
                         font-weight: 700;
                         font-family: var(--font-mono);
+                        color: var(--text-primary) !important;
                     }
 
-                    .live-price.green { color: var(--green); }
-                    .live-price.red { color: var(--red); }
+                    .live-price.green,
+                    .live-price.red {
+                        color: var(--text-primary) !important;
+                    }
 
                     .side-toggle {
                         display: flex;
@@ -478,6 +500,7 @@ export default function SimulatorPage() {
                         padding: 3px;
                         border-radius: var(--radius-md);
                         gap: 3px;
+                        border: 1px solid var(--border-color);
                     }
 
                     .side-btn {
@@ -494,8 +517,23 @@ export default function SimulatorPage() {
                         font-family: var(--font-sans);
                     }
 
-                    .side-btn.buy.active { background: var(--green-bg); color: var(--green); }
-                    .side-btn.sell.active { background: var(--red-bg); color: var(--red); }
+                    .side-btn.buy.active {
+                        background: #FFFFFF;
+                        color: #000000 !important;
+                    }
+                    .side-btn.sell.active {
+                        background: rgba(255, 255, 255, 0.12);
+                        color: #FFFFFF !important;
+                        border: 1px solid rgba(255, 255, 255, 0.22);
+                    }
+                    [data-theme='light'] .side-btn.buy.active {
+                        background: #000000;
+                        color: #FFFFFF !important;
+                    }
+                    [data-theme='light'] .side-btn.sell.active {
+                        background: rgba(0, 0, 0, 0.1);
+                        color: #000000 !important;
+                    }
 
                     .form-row { display: flex; gap: 10px; }
                     .form-row > .form-group { flex: 1; }
@@ -507,7 +545,7 @@ export default function SimulatorPage() {
                         justify-content: space-between;
                     }
 
-                    .warn { color: var(--red); font-weight: 600; }
+                    .warn { color: var(--text-primary); font-weight: 600; text-decoration: underline; }
 
                     .place-btn {
                         width: 100%;
@@ -517,15 +555,34 @@ export default function SimulatorPage() {
                         font-size: 0.875rem;
                         font-weight: 700;
                         cursor: pointer;
-                        color: white;
                         margin-top: auto;
-                        transition: opacity 0.15s;
+                        transition: all 0.15s ease;
                         font-family: var(--font-sans);
                     }
 
-                    .place-btn.buy { background: var(--green); }
-                    .place-btn.sell { background: var(--red); }
-                    .place-btn:disabled { opacity: 0.4; cursor: not-allowed; background: var(--text-tertiary); }
+                    .place-btn.buy {
+                        background: #FFFFFF;
+                        color: #000000 !important;
+                        border: 1px solid #FFFFFF;
+                    }
+                    .place-btn.sell {
+                        background: rgba(255, 255, 255, 0.12);
+                        color: #FFFFFF !important;
+                        border: 1px solid rgba(255, 255, 255, 0.25);
+                    }
+                    [data-theme='light'] .place-btn.buy {
+                        background: #000000;
+                        color: #FFFFFF !important;
+                    }
+                    [data-theme='light'] .place-btn.sell {
+                        background: rgba(0, 0, 0, 0.1);
+                        color: #000000 !important;
+                    }
+                    .place-btn:hover {
+                        opacity: 0.9;
+                        transform: scale(0.99);
+                    }
+                    .place-btn:disabled { opacity: 0.35; cursor: not-allowed; background: var(--text-tertiary); }
 
                     /* Modal */
                     .modal-overlay {
@@ -585,9 +642,10 @@ export default function SimulatorPage() {
                     }
 
                     .modal-btn.save {
-                        background: var(--primary-blue);
-                        border: none;
-                        color: white;
+                        background: var(--text-primary);
+                        border: 1px solid var(--text-primary);
+                        color: var(--bg-app);
+                        font-weight: 600;
                     }
 
                     /* History */
@@ -623,18 +681,33 @@ export default function SimulatorPage() {
                     }
 
                     .mono { font-family: var(--font-mono); }
-                    .green { color: var(--green); font-weight: 600; }
-                    .red { color: var(--red); font-weight: 600; }
+                    .green, .red { color: var(--text-primary) !important; font-weight: 600; }
 
                     .side-tag {
                         padding: 2px 8px;
-                        border-radius: 4px;
+                        border-radius: var(--radius-full);
                         font-size: 0.688rem;
                         font-weight: 700;
                     }
 
-                    .side-tag.buy { background: var(--green-bg); color: var(--green); }
-                    .side-tag.sell { background: var(--red-bg); color: var(--red); }
+                    .side-tag.buy {
+                        background: #FFFFFF;
+                        color: #000000 !important;
+                        border: 1px solid #FFFFFF;
+                    }
+                    .side-tag.sell {
+                        background: rgba(255, 255, 255, 0.1);
+                        color: #FFFFFF !important;
+                        border: 1px solid rgba(255, 255, 255, 0.25);
+                    }
+                    [data-theme='light'] .side-tag.buy {
+                        background: #000000;
+                        color: #FFFFFF !important;
+                    }
+                    [data-theme='light'] .side-tag.sell {
+                        background: rgba(0, 0, 0, 0.08);
+                        color: #000000 !important;
+                    }
 
                     .action-btns { display: flex; gap: 6px; }
 
@@ -655,9 +728,13 @@ export default function SimulatorPage() {
                     }
 
                     .act-btn.close {
-                        border: 1px solid var(--red);
-                        background: var(--red-bg);
-                        color: var(--red);
+                        border: 1px solid var(--border-color);
+                        background: rgba(255, 255, 255, 0.08);
+                        color: var(--text-primary);
+                    }
+                    [data-theme='light'] .act-btn.close {
+                        background: rgba(0, 0, 0, 0.05);
+                        color: #000000;
                     }
 
                     .act-btn:disabled { opacity: 0.4; cursor: not-allowed; }

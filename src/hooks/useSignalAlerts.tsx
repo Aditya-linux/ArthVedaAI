@@ -36,15 +36,16 @@ export function useSignalAlerts() {
                                             <span
                                                 className="px-2 py-1 rounded text-xs font-bold"
                                                 style={{
-                                                    backgroundColor: signal.type === 'BUY' ? 'var(--green-bg)' : signal.type === 'SELL' ? 'var(--red-bg)' : 'rgba(234, 179, 8, 0.1)',
-                                                    color: signal.type === 'BUY' ? 'var(--green)' : signal.type === 'SELL' ? 'var(--red)' : '#EAB308'
+                                                    backgroundColor: signal.type === 'BUY' ? '#FFFFFF' : 'rgba(255, 255, 255, 0.12)',
+                                                    color: signal.type === 'BUY' ? '#000000' : '#FFFFFF',
+                                                    border: '1px solid rgba(255, 255, 255, 0.2)'
                                                 }}
                                             >
                                                 {signal.type}
                                             </span>
                                             <span className="font-bold text-lg">{symbol}</span>
                                         </div>
-                                        <span className="text-[var(--primary-blue)] font-bold">{signal.confidence}% Match</span>
+                                        <span className="text-white font-bold">{signal.confidence}% Match</span>
                                     </div>
                                     <p className="text-sm text-[var(--text-secondary)] m-0 line-clamp-2">
                                         {signal.reasoning.substring(0, 100)}...

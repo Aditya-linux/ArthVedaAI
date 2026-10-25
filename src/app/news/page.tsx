@@ -154,9 +154,9 @@ export default function NewsPage() {
                 .tab:hover { color: var(--text-primary); }
 
                 .tab.active {
-                    color: var(--primary-blue);
-                    border-bottom-color: var(--primary-blue);
-                    font-weight: 600;
+                    color: var(--text-primary);
+                    border-bottom-color: var(--text-primary);
+                    font-weight: 700;
                 }
 
                 .news-grid {
@@ -255,19 +255,53 @@ export default function NewsPage() {
                     font-size: 0.875rem;
                 }
 
-                /* Badges */
+                /* Badges (Apple Monochrome Luxury) */
                 :global(.badge) {
                     display: inline-flex;
                     align-items: center;
+                    gap: 4px;
                     padding: 3px 10px;
                     border-radius: var(--radius-full);
-                    font-size: 0.75rem;
+                    font-size: 0.72rem;
                     font-weight: 600;
+                    letter-spacing: 0.02em;
+                    font-family: var(--font-sans);
                 }
 
-                :global(.badge-bullish) { background: var(--green-bg); color: var(--green); }
-                :global(.badge-bearish) { background: var(--red-bg); color: var(--red); }
-                :global(.badge-neutral) { background: var(--yellow-bg); color: var(--yellow); }
+                :global(.badge-bullish) {
+                    background: #FFFFFF;
+                    color: #000000 !important;
+                    font-weight: 700;
+                    border: 1px solid #FFFFFF;
+                }
+                :global(.badge-bearish) {
+                    background: rgba(255, 255, 255, 0.08);
+                    color: #FFFFFF !important;
+                    border: 1px solid rgba(255, 255, 255, 0.22);
+                    font-weight: 600;
+                }
+                :global(.badge-neutral) {
+                    background: rgba(255, 255, 255, 0.03);
+                    color: #D4D4D8 !important;
+                    border: 1px dashed rgba(255, 255, 255, 0.2);
+                    font-weight: 500;
+                }
+
+                :global([data-theme='light'] .badge-bullish) {
+                    background: #000000;
+                    color: #FFFFFF !important;
+                    border: 1px solid #000000;
+                }
+                :global([data-theme='light'] .badge-bearish) {
+                    background: rgba(0, 0, 0, 0.06);
+                    color: #000000 !important;
+                    border: 1px solid rgba(0, 0, 0, 0.2);
+                }
+                :global([data-theme='light'] .badge-neutral) {
+                    background: transparent;
+                    color: #52525B !important;
+                    border: 1px dashed rgba(0, 0, 0, 0.2);
+                }
 
                 /* Responsive */
                 @media (max-width: 768px) {

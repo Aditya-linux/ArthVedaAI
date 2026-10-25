@@ -266,8 +266,8 @@ function DashboardContent() {
                     display: flex;
                 }
 
-                .star-btn.active { color: var(--yellow); }
-                .star-btn:hover { color: var(--yellow); }
+                .star-btn.active { color: var(--text-primary); }
+                .star-btn:hover { color: var(--text-primary); }
 
                 .price-block {
                     display: flex;
@@ -286,15 +286,35 @@ function DashboardContent() {
                 .price-change {
                     display: inline-flex;
                     align-items: center;
-                    gap: 2px;
-                    padding: 3px 8px;
+                    gap: 3px;
+                    padding: 3px 9px;
                     border-radius: var(--radius-full);
                     font-size: 0.813rem;
                     font-weight: 600;
+                    font-family: var(--font-mono);
                 }
 
-                .price-change.up { background: var(--green-bg); color: var(--green); }
-                .price-change.down { background: var(--red-bg); color: var(--red); }
+                .price-change.up {
+                    background: #FFFFFF;
+                    color: #000000 !important;
+                    border: 1px solid #FFFFFF;
+                }
+                .price-change.down {
+                    background: rgba(255, 255, 255, 0.08);
+                    color: #FFFFFF !important;
+                    border: 1px solid rgba(255, 255, 255, 0.22);
+                }
+
+                [data-theme='light'] .price-change.up {
+                    background: #000000;
+                    color: #FFFFFF !important;
+                    border: 1px solid #000000;
+                }
+                [data-theme='light'] .price-change.down {
+                    background: rgba(0, 0, 0, 0.06);
+                    color: #000000 !important;
+                    border: 1px solid rgba(0, 0, 0, 0.2);
+                }
 
                 .refresh-btn {
                     background: var(--bg-app);
@@ -363,21 +383,49 @@ function DashboardContent() {
 
                 .signal-type {
                     padding: 4px 12px;
-                    border-radius: var(--radius-sm);
+                    border-radius: var(--radius-full);
                     font-weight: 700;
-                    font-size: 0.813rem;
+                    font-size: 0.75rem;
                     text-transform: uppercase;
-                    letter-spacing: 0.02em;
+                    letter-spacing: 0.03em;
                 }
 
-                .signal-type.buy { background: var(--green-bg); color: var(--green); }
-                .signal-type.sell { background: var(--red-bg); color: var(--red); }
-                .signal-type.hold { background: var(--yellow-bg); color: var(--yellow); }
+                .signal-type.buy {
+                    background: #FFFFFF;
+                    color: #000000 !important;
+                    border: 1px solid #FFFFFF;
+                }
+                .signal-type.sell {
+                    background: rgba(255, 255, 255, 0.08);
+                    color: #FFFFFF !important;
+                    border: 1px solid rgba(255, 255, 255, 0.24);
+                }
+                .signal-type.hold {
+                    background: rgba(255, 255, 255, 0.04);
+                    color: #D4D4D8 !important;
+                    border: 1px dashed rgba(255, 255, 255, 0.2);
+                }
+
+                [data-theme='light'] .signal-type.buy {
+                    background: #000000;
+                    color: #FFFFFF !important;
+                    border: 1px solid #000000;
+                }
+                [data-theme='light'] .signal-type.sell {
+                    background: rgba(0, 0, 0, 0.06);
+                    color: #000000 !important;
+                    border: 1px solid rgba(0, 0, 0, 0.2);
+                }
+                [data-theme='light'] .signal-type.hold {
+                    background: transparent;
+                    color: #52525B !important;
+                    border: 1px dashed rgba(0, 0, 0, 0.2);
+                }
 
                 .signal-conf {
                     font-size: 0.813rem;
                     color: var(--text-secondary);
-                    font-weight: 500;
+                    font-weight: 600;
                 }
 
                 .signal-targets {
@@ -386,6 +434,7 @@ function DashboardContent() {
                     padding: 10px;
                     background: var(--bg-app);
                     border-radius: var(--radius-md);
+                    border: 1px solid var(--border-color);
                 }
 
                 .target-col {
@@ -407,10 +456,13 @@ function DashboardContent() {
                     font-weight: 700;
                     font-family: var(--font-mono);
                     font-size: 0.875rem;
+                    color: var(--text-primary) !important;
                 }
 
-                .target-val.green { color: var(--green); }
-                .target-val.red { color: var(--red); }
+                .target-val.green,
+                .target-val.red {
+                    color: var(--text-primary) !important;
+                }
 
                 .signal-reason {
                     font-size: 0.813rem;
@@ -437,18 +489,21 @@ function DashboardContent() {
                     font-size: 0.688rem;
                     font-weight: 700;
                     text-transform: uppercase;
-                    color: var(--primary-blue);
+                    color: var(--text-secondary);
                     letter-spacing: 0.03em;
                 }
 
                 .pred-val {
                     font-weight: 700;
                     font-size: 0.813rem;
+                    color: var(--text-primary) !important;
                 }
 
-                .pred-val.green { color: var(--green); }
-                .pred-val.red { color: var(--red); }
-                .pred-val.yellow { color: var(--yellow); }
+                .pred-val.green,
+                .pred-val.red,
+                .pred-val.yellow {
+                    color: var(--text-primary) !important;
+                }
 
                 .pred-driver {
                     font-size: 0.75rem;
@@ -479,9 +534,28 @@ function DashboardContent() {
                     flex-shrink: 0;
                 }
 
-                .dot.bullish { background: var(--green); }
-                .dot.bearish { background: var(--red); }
-                .dot.neutral { background: var(--yellow); }
+                .dot.bullish {
+                    background: #FFFFFF;
+                    box-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
+                }
+                .dot.bearish {
+                    background: transparent;
+                    border: 1.5px solid rgba(255, 255, 255, 0.6);
+                }
+                .dot.neutral {
+                    background: rgba(255, 255, 255, 0.25);
+                }
+
+                [data-theme='light'] .dot.bullish {
+                    background: #000000;
+                }
+                [data-theme='light'] .dot.bearish {
+                    background: transparent;
+                    border: 1.5px solid rgba(0, 0, 0, 0.6);
+                }
+                [data-theme='light'] .dot.neutral {
+                    background: rgba(0, 0, 0, 0.25);
+                }
 
                 .intel-text {
                     display: flex;

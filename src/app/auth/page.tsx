@@ -248,9 +248,9 @@ function AuthForm() {
                     text-align: left;
                 }
                 .message.error {
-                    background: var(--red-bg);
-                    color: var(--red);
-                    border: 1px solid rgba(185, 28, 28, 0.15);
+                    background: rgba(255, 255, 255, 0.08);
+                    color: var(--text-primary);
+                    border: 1px solid var(--border-color);
                 }
 
                 /* Google Button */

@@ -49,8 +49,8 @@ export default function EducationCard() {
 
             <style jsx>{`
                 .education-card {
-                    background: linear-gradient(135deg, var(--bg-surface) 0%, var(--bg-app) 100%);
-                    border-left: 4px solid var(--yellow);
+                    background: var(--bg-surface);
+                    border-left: 3px solid var(--text-primary);
                     padding: 20px;
                 }
 
@@ -68,8 +68,7 @@ export default function EducationCard() {
                 }
 
                 .icon-bulb {
-                    color: var(--yellow);
-                    fill: var(--yellow-bg);
+                    color: var(--text-primary);
                 }
 
                 .card-title {

@@ -321,11 +321,11 @@ export default function BenchmarksPage() {
                             <div className="correlation-metrics">
                                 <div className="corr-box">
                                     <span className="corr-label">Directional Return Prediction</span>
-                                    <span className="corr-val text-green">{data.market_correlation_study.sentiment_feature_impact}</span>
+                                    <span className="corr-val">{data.market_correlation_study.sentiment_feature_impact}</span>
                                 </div>
                                 <div className="corr-box">
                                     <span className="corr-label">Risk-Adjusted Alpha (Sharpe Ratio)</span>
-                                    <span className="corr-val text-blue">{data.market_correlation_study.sharpe_ratio_improvement}</span>
+                                    <span className="corr-val">{data.market_correlation_study.sharpe_ratio_improvement}</span>
                                 </div>
                                 <div className="corr-box">
                                     <span className="corr-label">Empirical Validation Sample</span>
@@ -763,8 +763,21 @@ export default function BenchmarksPage() {
                     padding: 3px 8px;
                     border-radius: var(--radius-full);
                 }
-                .domain-badge.yes { background: var(--green-bg); color: var(--green); }
-                .domain-badge.no { background: var(--bg-app); color: var(--text-tertiary); }
+                .domain-badge.yes {
+                    background: #FFFFFF;
+                    color: #000000 !important;
+                    border: 1px solid #FFFFFF;
+                }
+                .domain-badge.no {
+                    background: rgba(255, 255, 255, 0.05);
+                    color: var(--text-tertiary);
+                    border: 1px solid var(--border-color);
+                }
+                [data-theme='light'] .domain-badge.yes {
+                    background: #000000;
+                    color: #FFFFFF !important;
+                    border: 1px solid #000000;
+                }
 
                 .dual-grid {
                     display: grid;
@@ -803,9 +816,13 @@ export default function BenchmarksPage() {
                 }
 
                 .diagonal-match {
-                    background: rgba(34, 197, 94, 0.15);
-                    color: var(--green);
+                    background: rgba(255, 255, 255, 0.14);
+                    color: var(--text-primary) !important;
                     font-weight: 700;
+                }
+                [data-theme='light'] .diagonal-match {
+                    background: rgba(0, 0, 0, 0.08);
+                    color: var(--text-primary) !important;
                 }
 
                 .off-diagonal {
@@ -841,8 +858,7 @@ export default function BenchmarksPage() {
                     color: var(--text-primary);
                 }
 
-                .text-green { color: var(--green); }
-                .text-blue { color: var(--primary-blue); }
+                .text-green, .text-blue { color: var(--text-primary) !important; }
 
                 .test-form {
                     display: flex;
@@ -866,16 +882,23 @@ export default function BenchmarksPage() {
                     display: flex;
                     align-items: center;
                     gap: 8px;
-                    padding: 10px 20px;
-                    background: var(--primary-blue);
-                    color: white;
-                    border: none;
-                    border-radius: var(--radius-md);
+                    padding: 10px 22px;
+                    background: var(--text-primary);
+                    color: var(--bg-app);
+                    border: 1px solid var(--text-primary);
+                    border-radius: var(--radius-full);
                     font-weight: 600;
+                    font-size: 0.85rem;
                     cursor: pointer;
+                    transition: all 0.2s ease;
                 }
 
-                .test-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+                .test-btn:hover {
+                    opacity: 0.88;
+                    transform: scale(0.98);
+                }
+
+                .test-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
                 .test-result-box {
                     margin-top: 16px;
@@ -897,11 +920,40 @@ export default function BenchmarksPage() {
                     padding: 3px 10px;
                     border-radius: var(--radius-full);
                     text-transform: uppercase;
-                    font-size: 0.8rem;
+                    font-size: 0.75rem;
+                    letter-spacing: 0.03em;
                 }
-                .result-badge.bullish { background: var(--green-bg); color: var(--green); }
-                .result-badge.bearish { background: var(--red-bg); color: var(--red); }
-                .result-badge.neutral { background: rgba(234, 179, 8, 0.1); color: #EAB308; }
+                .result-badge.bullish {
+                    background: #FFFFFF;
+                    color: #000000 !important;
+                    border: 1px solid #FFFFFF;
+                }
+                .result-badge.bearish {
+                    background: rgba(255, 255, 255, 0.08);
+                    color: #FFFFFF !important;
+                    border: 1px solid rgba(255, 255, 255, 0.24);
+                }
+                .result-badge.neutral {
+                    background: rgba(255, 255, 255, 0.03);
+                    color: #D4D4D8 !important;
+                    border: 1px dashed rgba(255, 255, 255, 0.2);
+                }
+
+                [data-theme='light'] .result-badge.bullish {
+                    background: #000000;
+                    color: #FFFFFF !important;
+                    border: 1px solid #000000;
+                }
+                [data-theme='light'] .result-badge.bearish {
+                    background: rgba(0, 0, 0, 0.06);
+                    color: #000000 !important;
+                    border: 1px solid rgba(0, 0, 0, 0.2);
+                }
+                [data-theme='light'] .result-badge.neutral {
+                    background: transparent;
+                    color: #52525B !important;
+                    border: 1px dashed rgba(0, 0, 0, 0.2);
+                }
 
                 .result-conf {
                     font-size: 0.8rem;
@@ -919,9 +971,13 @@ export default function BenchmarksPage() {
                 .result-bar {
                     height: 100%;
                 }
-                .result-bar.bullish { background: var(--green); }
-                .result-bar.bearish { background: var(--red); }
-                .result-bar.neutral { background: #EAB308; }
+                .result-bar.bullish { background: #FFFFFF; }
+                .result-bar.bearish { background: rgba(255, 255, 255, 0.5); }
+                .result-bar.neutral { background: rgba(255, 255, 255, 0.25); }
+
+                [data-theme='light'] .result-bar.bullish { background: #000000; }
+                [data-theme='light'] .result-bar.bearish { background: rgba(0, 0, 0, 0.4); }
+                [data-theme='light'] .result-bar.neutral { background: rgba(0, 0, 0, 0.2); }
 
                 .table-responsive,
                 .matrix-table-wrap {
