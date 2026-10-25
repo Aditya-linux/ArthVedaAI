@@ -18,8 +18,10 @@ const Navbar = () => {
 
   const getPageTitle = () => {
     if (pathname.includes('simulator')) return 'Simulator';
-    if (pathname.includes('signals')) return 'AI Signals';
-    if (pathname.includes('news')) return 'News Feed';
+    if (pathname.includes('signals')) return 'AI Signals & Prediction';
+    if (pathname.includes('benchmarks')) return 'NLP Benchmarks';
+    if (pathname.includes('reports')) return 'SEC Reports NLP';
+    if (pathname.includes('news')) return 'Market Intelligence';
     if (pathname.includes('dashboard')) return 'Dashboard';
     return 'Dashboard';
   };

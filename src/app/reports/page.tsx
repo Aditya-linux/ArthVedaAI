@@ -288,17 +288,26 @@ export default function ReportsPage() {
                     align-items: center;
                     gap: 8px;
                     padding: 10px 18px;
-                    background: var(--primary-blue);
-                    color: white;
-                    border: none;
+                    background: var(--text-primary);
+                    color: var(--bg-app);
+                    border: 1px solid var(--text-primary);
                     border-radius: var(--radius-md);
                     font-weight: 600;
                     font-size: 0.9rem;
                     cursor: pointer;
-                    transition: opacity 0.2s;
+                    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
                 }
 
-                .btn-refresh:disabled { opacity: 0.6; cursor: not-allowed; }
+                .btn-refresh:hover:not(:disabled) {
+                    opacity: 0.88;
+                    transform: translateY(-1px);
+                }
+
+                .btn-refresh:disabled { 
+                    opacity: 0.5; 
+                    cursor: not-allowed; 
+                    transform: none;
+                }
                 .spinning { animation: spin 1s linear infinite; }
                 @keyframes spin { to { transform: rotate(360deg); } }
 
@@ -307,12 +316,16 @@ export default function ReportsPage() {
                     gap: 16px;
                     align-items: flex-start;
                     padding: 18px 24px;
-                    background: rgba(59, 130, 246, 0.05);
-                    border: 1px solid rgba(59, 130, 246, 0.2);
+                    background: rgba(255, 255, 255, 0.03);
+                    border: 1px solid var(--border-color);
+                }
+
+                [data-theme='light'] .academic-callout {
+                    background: rgba(0, 0, 0, 0.02);
                 }
 
                 .callout-icon {
-                    color: var(--primary-blue);
+                    color: var(--text-primary);
                     margin-top: 2px;
                 }
 

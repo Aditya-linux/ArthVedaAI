@@ -734,7 +734,16 @@ export default function BenchmarksPage() {
                 }
 
                 .selected-row {
-                    background: rgba(59, 130, 246, 0.05);
+                    background: rgba(255, 255, 255, 0.04);
+                }
+                [data-theme='light'] .selected-row {
+                    background: rgba(0, 0, 0, 0.03);
+                }
+
+                .benchmark-table th:last-child,
+                .benchmark-table td:last-child {
+                    white-space: nowrap;
+                    text-align: right;
                 }
 
                 .model-name-cell {
@@ -754,14 +763,20 @@ export default function BenchmarksPage() {
                 }
 
                 .f1-cell {
-                    color: var(--primary-blue);
+                    color: var(--text-primary);
+                    font-weight: 700;
                 }
 
                 .domain-badge {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    white-space: nowrap;
                     font-size: 0.72rem;
                     font-weight: 700;
-                    padding: 3px 8px;
+                    padding: 4px 10px;
                     border-radius: var(--radius-full);
+                    letter-spacing: 0.02em;
                 }
                 .domain-badge.yes {
                     background: #FFFFFF;
@@ -769,14 +784,19 @@ export default function BenchmarksPage() {
                     border: 1px solid #FFFFFF;
                 }
                 .domain-badge.no {
-                    background: rgba(255, 255, 255, 0.05);
-                    color: var(--text-tertiary);
+                    background: rgba(255, 255, 255, 0.06);
+                    color: var(--text-secondary);
                     border: 1px solid var(--border-color);
                 }
                 [data-theme='light'] .domain-badge.yes {
                     background: #000000;
                     color: #FFFFFF !important;
                     border: 1px solid #000000;
+                }
+                [data-theme='light'] .domain-badge.no {
+                    background: rgba(0, 0, 0, 0.05);
+                    color: var(--text-secondary);
+                    border: 1px solid var(--border-color);
                 }
 
                 .dual-grid {

@@ -27,6 +27,21 @@ function generateMockNews(symbol: string) {
         { headline: `${company} Under Pressure as Competition Intensifies`, summary: `${company} faces mounting competitive pressure from emerging rivals. Market share erosion and pricing weakness have led to a cautious outlook among investors.`, source: 'Forbes' },
     ];
 
+    const editorialImages = [
+        'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80', // Financial chart surge
+        'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80', // Wall Street market graph
+        'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80', // Corporate skyscraper deal
+        'https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=800&q=80', // Regulatory gavel / law
+        'https://images.unsplash.com/photo-1535320903710-d993d3d77d29?auto=format&fit=crop&w=800&q=80', // Market volatility / trading terminal
+        'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80', // AI Silicon & chips
+        'https://images.unsplash.com/photo-1642543492481-44e81e3914a7?auto=format&fit=crop&w=800&q=80', // Candlestick technical breakout
+        'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80', // Modern corporate boardroom
+        'https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?auto=format&fit=crop&w=800&q=80', // Dividend / capital growth
+        'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80', // Executive insider business
+        'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=800&q=80', // Analytics / top pick
+        'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80', // Competitive data networks
+    ];
+
     const now = Date.now();
     return newsTemplates.map((template, i) => {
         const sentiment = analyzeSentiment(template.headline + ' ' + template.summary);
@@ -36,6 +51,7 @@ function generateMockNews(symbol: string) {
             summary: template.summary,
             source: template.source,
             url: '#',
+            image: editorialImages[i % editorialImages.length],
             datetime: now - i * 3600000 * (1 + Math.random() * 4),
             relatedSymbols: [symbol],
             sentiment,

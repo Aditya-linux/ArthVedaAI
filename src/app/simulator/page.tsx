@@ -217,7 +217,7 @@ export default function SimulatorPage() {
                             onClick={handlePlaceOrder}
                             disabled={isTradingDisabled}
                         >
-                            {!marketStatus.isOpen ? 'MARKET CLOSED' : `${side} ${symbol}`}
+                            {!marketStatus.isOpen ? 'Market Closed (Weekend)' : `${side} ${symbol}`}
                         </button>
                     </div>
                 </div>
@@ -578,11 +578,23 @@ export default function SimulatorPage() {
                         background: rgba(0, 0, 0, 0.1);
                         color: #000000 !important;
                     }
-                    .place-btn:hover {
+                    .place-btn:hover:not(:disabled) {
                         opacity: 0.9;
                         transform: scale(0.99);
                     }
-                    .place-btn:disabled { opacity: 0.35; cursor: not-allowed; background: var(--text-tertiary); }
+                    .place-btn:disabled { 
+                        opacity: 1 !important; 
+                        cursor: not-allowed !important; 
+                        background: rgba(255, 255, 255, 0.08) !important; 
+                        color: rgba(255, 255, 255, 0.5) !important;
+                        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+                        font-weight: 600;
+                    }
+                    [data-theme='light'] .place-btn:disabled {
+                        background: rgba(0, 0, 0, 0.05) !important;
+                        color: rgba(0, 0, 0, 0.4) !important;
+                        border: 1px solid rgba(0, 0, 0, 0.1) !important;
+                    }
 
                     /* Modal */
                     .modal-overlay {
